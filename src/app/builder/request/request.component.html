@@ -1,0 +1,78 @@
+<section id="request">
+  <div id="request-builder">
+
+    <div id="request-url" class="clearfix">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="table-layout">
+            <div class=" table-cell">
+              <div class="input-group ">
+                <div class="input-group-btn">
+
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    (click)="methodDrop= !methodDrop">
+                {{method}} <span class="caret"></span>
+              </button>
+                  <ul class="dropdown-menu" [style.display]="methodDrop?'block':'none'" (click)="methodDrop=false">
+                    <li><a (click)="method='GET'">GET</a></li>
+                    <li><a (click)="method='POST'">POST</a></li>
+                    <li><a (click)="method='PUT'">PUT</a></li>
+                    <li><a (click)="method='PATCH'">PATCH</a></li>
+                    <li><a (click)="method='DELETE'">DELETE</a></li>
+                  </ul>
+                </div>
+                <!-- /btn-group -->
+                <input type="text" [(ngModel)]="request.url" class="form-control" placeholder="Enter request URL here" aria-label="...">
+
+
+              </div>
+              <!-- /input-group -->
+            </div>
+            <div class="fixed-width-140">
+              <button class="btn btn-primary" type="button" data-complete-text="Send request" id="submit-request" tabindex="5" (click)="onSend()">            Send        </button>
+              <button class="btn" id="update-request-in-collection" (click)="onSave()">Save        </button>
+            </div>
+          </div>
+        </div>
+        <!-- /.col-lg-6 -->
+      </div>
+      <!-- /.row -->
+
+
+      <ngb-tabset>
+        <ngb-tab title="Header">
+          <ng-template ngbTabContent>
+            <request-header [header]="header"></request-header>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Body">
+          <ng-template ngbTabContent>
+            <div class="button-bar" style="margin:0 auto;">
+              <div class="button-bar__item">
+                <input type="radio" name="mode" value="formdata" [(ngModel)]="mode">
+                <button class="button-bar__button">form-data</button>
+              </div>
+              <div class="button-bar__item">
+                <input type="radio" name="mode" value="urlencoded" [(ngModel)]="mode">
+                <button class="button-bar__button">x-www-form-urlencoded</button>
+              </div>
+              <div class="button-bar__item">
+                <input type="radio" name="mode" value="raw" [(ngModel)]="mode">
+                <button class="button-bar__button">raw</button>
+              </div>
+            </div>
+
+
+            <request-formdata [formdata]="formdata" *ngIf="mode=='formdata'"></request-formdata>
+            <request-urlencoded [urlencoded]="urlencoded" *ngIf="mode=='urlencoded'"></request-urlencoded>
+            <request-raw [raw]="raw" *ngIf="mode=='raw'"></request-raw>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+
+
+  </div>
+
+
+</section>

@@ -1,0 +1,13 @@
+<div class="IKeyvalueeditor-row" *ngFor="let data of formdata; let idx = index">
+  <input type="text" class="IKeyvalueeditor-key" placeholder="Key" [(ngModel)]="data.key" (keydown)="onKeyDown($event, idx)">
+  <input type="text" class="IKeyvalueeditor-value IKeyvalueeditor-value-text " placeholder="Value " [(ngModel)]="data.value"
+    (keydown)="onKeyDown($event, idx)">
+  <input type="text" class="IKeyvalueeditor-value IKeyvalueeditor-value-text " placeholder="Description" [(ngModel)]="data.description"
+    (keydown)="onKeyDown($event, idx)">
+  <input type="file" multiple="" class="IKeyvalueeditor-value IKeyvalueeditor-value-file" placeholder="Value" style="display: none;">
+  <select class="IKeyvalueeditor-valueTypeSelector" [(ngModel)]="data.type">
+    <option value="text" selected="">Text</option>
+    <option value="file">File</option>
+    </select>
+  <button type="button" class="btn btn-default btn-circle" (click)="onDeleteClick(idx)" *ngIf="formdata.length-1 != idx"><i class="glyphicon glyphicon-remove"></i></button>
+</div>

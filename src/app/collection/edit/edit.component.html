@@ -1,0 +1,23 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button aria-label="Close" class="close" type="button" (click)="onClose()">
+          <span aria-hidden="true">×</span>
+      </button>
+    <h3 class="modal-title">{{title}}</h3>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="exampleInputEmail1">Name</label>
+      <input type="text" class="form-control" placeholder="Request Name" [(ngModel)]="name">
+    </div>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Description</label>
+      <textarea class="form-control" placeholder="Adding a description makes yout docs better" [(ngModel)]="description">
+          </textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="onClose()">Cancel</button>
+    <button type="submit" class="btn btn-primary" (click)="onSave()">Save</button> 
+  </div>
+</div>

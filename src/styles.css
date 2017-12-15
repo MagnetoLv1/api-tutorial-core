@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+html,body { height: 100%}
+.btn-xxs {
+padding: 0px 3px;
+font-size: 8px;
+line-height: 1;
+border-radius: 1px;
+}

@@ -1,0 +1,3 @@
+<ul id="treeDemo"  [ngClass]="lineClass" >
+  <collection-item *ngFor="let subItem of item;let i = index;" [item]="subItem" [path]="path +'/'+ i" [level]="level" ></collection-item>
+</ul>
