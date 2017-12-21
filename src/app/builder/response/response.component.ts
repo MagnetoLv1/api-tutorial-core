@@ -11,7 +11,7 @@ export class ResponseComponent implements OnChanges, OnInit {
 
   private _body: String;
 
-
+  display_response:string='body';
   @Input() response: IResponse;
   constructor() { }
 

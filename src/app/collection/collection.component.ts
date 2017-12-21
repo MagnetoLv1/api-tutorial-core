@@ -19,7 +19,6 @@ export class CollectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.collectionService.test();
     //변경 수신대기
     this.collectionService.getItemListening().subscribe( (data: any)=> {
       //최초에는 toastr 를 띄우지 않음(collection==null)
@@ -62,8 +61,8 @@ export class CollectionComponent implements OnInit {
         return resultPromise.result.then((result) => {
           console.log(result);
         },
-          () => {
-            console.log('Rejected');
+          (e) => {
+            console.log('Rejected',e);
           });
       });
   }

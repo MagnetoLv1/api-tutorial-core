@@ -1,8 +1,31 @@
-<div class="IKeyvalueeditor-row" *ngFor="let data of urlencoded; let idx = index">
-  <input type="text" class="IKeyvalueeditor-key" placeholder="Key" [(ngModel)]="data.key" (keydown)="onKeyDown($event, idx)">
-  <input type="text" class="IKeyvalueeditor-value IKeyvalueeditor-value-text " placeholder="Value " [(ngModel)]="data.value"
-    (keydown)="onKeyDown($event, idx)">
-  <input type="text" class="IKeyvalueeditor-value IKeyvalueeditor-value-text " placeholder="Description" [(ngModel)]="data.description"
-    (keydown)="onKeyDown($event, idx)">
-  <button type="button" class="btn btn-default btn-circle" (click)="onDeleteClick(idx)" *ngIf="urlencoded.length-1 != idx"><i class="glyphicon glyphicon-remove"></i></button>
-</div>
+
+<table class="table" style="padding:5px">
+    <thead>
+      <tr>
+        <th>Key</th>
+        <th>Value</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="key-value-tbody">
+      <tr *ngFor="let data of urlencoded; let idx = index">
+        <td>
+          <input type="text" placeholder="Key" [(ngModel)]="data.key" (keydown)="onKeyDown($event, idx)">
+        </td>
+        <td>
+          <input type="text" placeholder="Value " [(ngModel)]="data.value" (keydown)="onKeyDown($event, idx)">
+        </td>
+        <td>
+          <input type="text" placeholder="Description" [(ngModel)]="data.description" (keydown)="onKeyDown($event, idx)">
+        </td>
+        <td>
+          <button type="button" class="btn btn-default" (click)="onDeleteClick(idx)" *ngIf="urlencoded.length-1 != idx">
+            <i class="glyphicon ion-close-round"></i>
+          </button>
+        </td>
+        <td></td>
+  
+      </tr>
+    </tbody>
+  </table>

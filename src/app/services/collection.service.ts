@@ -34,19 +34,6 @@ export class CollectionService {
 
 
 
-  test(): Observable<Object> {
-
-    
-    this.http.get('http://api.m.afreecatv.com/broad/a/list', { headers: this.headers })
-      .map(e => e.json())
-      .subscribe(data => {
-        console.log(data);
-      });
-    return null;
-  }
-
-
-
   getItemListening(): Observable<Object> {
     const collectionSubject: Subject<Object> = new Subject<Object>();
     var itemRef = firebase.database().ref('/api');

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NativeRequestService } from "../../services/native-request.service";
-import { NgbTabsetConfig } from "@ng-bootstrap/ng-bootstrap";
 import { IRequest, IResponse } from "./interface/item";
 import { SendService } from 'app/services/send.service';
 
@@ -15,7 +14,7 @@ export class RequestComponent implements OnInit {
   @Output() saveEvent = new EventEmitter<String>();
 
 
-
+  display_request:string = 'body';
   constructor(private nativeRequestService: NativeRequestService, private sendService:SendService) {
   }
 

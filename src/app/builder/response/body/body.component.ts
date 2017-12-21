@@ -11,7 +11,7 @@ export class BodyComponent implements OnInit {
 
   @Input() body: string = '';
   reader: FileReader;
-  _format: string;
+  _format: string='raw';
 
   bodyJson: string;
   height: number;

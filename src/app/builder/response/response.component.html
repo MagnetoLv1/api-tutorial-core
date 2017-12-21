@@ -7,31 +7,39 @@
     <h3>Could not get any response</h3>
 
     <p>
-      This seems to be like an error connecting to <span id="connection-error-url"></span>. The response status was 0.<br/>      Check out the
-      <a href="http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute" target="_blank">W3C XMLHttpRequest Level
-                2 spec</a> for more details about when this happens.
+      This seems to be like an error connecting to
+      <span id="connection-error-url"></span>. The response status was 0.
+      <br/> Check out the
+      <a href="http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute" target="_blank">W3C XMLHttpRequest Level 2 spec</a> for more details about when this happens.
     </p>
   </div>
   <div id="response-success-container">
-    <div id="response-top-bar">
-      <ngb-tabset>
-        <ngb-tab title="Body">
-          <ng-template ngbTabContent>
-            <response-body [body]="body"></response-body>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Cookies">
-          <ng-template ngbTabContent>
-            {{cookies | json}}
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Headers">
-          <ng-template ngbTabContent>
-            {{headers | json}}
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
 
+    <div class="row">
+      <div class="col-lg-12" style="    padding-right: 20px;    padding-left: 20px;">
+        <ul class="nav nav-tabs">
+          <li role="presentation" [ngClass]="{'active':display_response == 'header'}">
+            <a (click)="display_response='header'">Header</a>
+          </li>
+          <li role="presentation" [ngClass]="{'active':display_response == 'body'}">
+            <a (click)="display_response='body'">Body</a>
+          </li>
+          <li role="presentation" [ngClass]="{'active':display_response == 'cookies'}">
+            <a (click)="display_response='cookies'">Cookies</a>
+          </li>
+        </ul>
+
+        <div *ngIf="display_response=='headers'">
+          {{headers | json}}
+        </div>
+        <div *ngIf="display_response=='body'">
+          <response-body [body]="body"></response-body>
+        </div>
+        <div *ngIf="display_response=='cookies'">
+          {{cookies | json}}
+        </div>
+      </div>
     </div>
+
   </div>
 </section>

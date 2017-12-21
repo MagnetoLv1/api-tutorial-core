@@ -5,11 +5,11 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, UrlSerializer } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 //module
 import { NgxElectronModule } from 'ngx-electron';
 import { Broadcaster } from 'ng2-broadcast';
 import { AngularSplitModule } from 'angular-split'; //화면 slipt         
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { PrettyJsonModule, SafeJsonPipe } from 'angular2-prettyjson';   //Json Prtty 
@@ -63,7 +63,6 @@ import { RawComponent } from './builder/request/raw/raw.component';
     RouterModule,
     FormsModule,
     NgxElectronModule,
-    NgbModule.forRoot(),
     PrettyJsonModule,
     AngularSplitModule,
     ModalModule.forRoot(),
