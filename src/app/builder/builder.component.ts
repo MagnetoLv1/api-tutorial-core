@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Broadcaster } from "ng2-broadcast";
 import { CollectionService } from "app/services/collection.service";
 import { IItem, IKeyvalue, IResponse, IBody, IRequest } from "./request/interface/item";
+import { ItemRequest, Item, ItemResponse, Keyvalue } from 'app/models/request';
 
 
 @Component({
@@ -11,35 +12,8 @@ import { IItem, IKeyvalue, IResponse, IBody, IRequest } from "./request/interfac
 })
 export class BuilderComponent implements OnInit {
 
-  item: IItem;
-  request: IRequest = <IRequest>{
-    url: '',
-    method: 'GET',
-    body: {
-      mode:'formdata',
-      formdata: [{
-      key: '',
-      value: '',
-      description: ''
-    }],
-      urlencoded: [{
-      key: '',
-      value: '',
-      description: ''
-    }],
-    },
-    header: [{
-      key: '',
-      value: '',
-      description: ''
-    }]
-  };
-  response: IResponse = <IResponse>{
-    status: 0,
-    statusText: '',
-    headers: [],
-    body: ''
-  };
+  item: Item = new Item();
+  response:ItemResponse = new ItemResponse();
   constructor(private broadcaster: Broadcaster, private collectionService: CollectionService) {
 
     /**
@@ -47,19 +21,18 @@ export class BuilderComponent implements OnInit {
     */
     this.broadcaster.on<string>('item')
       .subscribe((item: any) => {
-        this.item = item;
-        this.request = this.MergeRecursive(<IRequest>{
-          url: '',
-          method: 'GET',
-          body: {
-            formdata: [],
-            urlencoded: [],
-          },
-          header: []
-        }, JSON.parse(JSON.stringify(item.request)));
-        this.addBlankInput(this.request, 'header');
-        this.addBlankInput(this.request.body, 'formdata');
-        this.addBlankInput(this.request.body, 'urlencoded');
+        //Item 복제
+        this.item = JSON.parse(JSON.stringify(item));
+
+       // this.item.request = this.MergeRecursive(new ItemRequest(), JSON.parse(JSON.stringify(item.request)));
+
+
+
+        this.addBlankInput(this.item.request, 'header');
+        if(this.item.request.body){
+          this.addBlankInput(this.item.request.body, 'formdata');
+          this.addBlankInput(this.item.request.body, 'urlencoded');
+        }
       });
   }
 
@@ -67,12 +40,12 @@ export class BuilderComponent implements OnInit {
   }
 
 
-  onResponseChange(response: IResponse) {
+  onResponseChange(response: ItemResponse) {
     this.response = response;
   }
 
   onSaveEvent() {
-    let request = JSON.parse(JSON.stringify(this.request));
+    let request = JSON.parse(JSON.stringify(this.item.request));
     this.emptyDataRemove(request.body, 'urlencoded');
     this.emptyDataRemove(request.body, 'formdata');
     this.emptyDataRemove(request, 'header');
@@ -86,14 +59,10 @@ export class BuilderComponent implements OnInit {
    */
   addBlankInput(parent: any, key: string) {
     if (!parent[key]) {
-      parent[key] = new Array<IKeyvalue>();
+      parent[key] = new Array<Keyvalue>();
     }
     let values = parent[key];
-    values.push(<IKeyvalue>{
-      key: '',
-      value: '',
-      description: ''
-    });
+    values.push(new Keyvalue());
   }
 
 
@@ -101,7 +70,7 @@ export class BuilderComponent implements OnInit {
     if (!parent[key]) {
       return;
     }
-    let values: Array<IKeyvalue> = parent[key];
+    let values: Array<Keyvalue> = parent[key];
     let cnt = values.length;
     if (cnt == 0) {
       delete parent[key];
@@ -114,7 +83,7 @@ export class BuilderComponent implements OnInit {
     }
   }
 
-  isEmptyData(data: IKeyvalue) {
+  isEmptyData(data: Keyvalue) {
     if (!data.key && !data.value) {
       return true;
     }

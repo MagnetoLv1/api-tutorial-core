@@ -8,21 +8,24 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class CollectionService {
 
-  headers: Headers;
-  app: firebase.app.App;
   public modifier: string
   constructor(private http: Http) {
     this.modifier = Math.random().toString();
 
-    this.http = http;
-    this.headers = new Headers();
-    this.headers.append('Content-Type', 'multipart/form-data');
-    this.headers.append('Access-Control-Allow-Origin', 'naver.com');
-    this.headers.append('Accept-Language', 'ko_KR');
-    this.headers.append('Referer', 'http://naver.com');
-    this.headers.append('User-Agent', 'test User-Agent');
+    this.init();
+  }
 
-    this.app = firebase.initializeApp({
+  init(){
+    firebase.initializeApp({
+      apiKey: "AIzaSyCJLpKoVeOSlUsVquDyR9o4DQT7hg6Br4o",
+      authDomain: "test-b8174.firebaseapp.com",
+      databaseURL: "https://test-b8174.firebaseio.com",
+      projectId: "test-b8174",
+      storageBucket: "apiviewer.appspot.com",
+      messagingSenderId: "293629322300"
+    });
+    /*
+    firebase.initializeApp({
       apiKey: "AIzaSyBM_wKB_LYG2bdF-iFYaIaFHNcgetNCFPI",
       authDomain: "apiviewer.firebaseapp.com",
       databaseURL: "https://apiviewer.firebaseio.com",
@@ -30,8 +33,20 @@ export class CollectionService {
       storageBucket: "apiviewer.appspot.com",
       messagingSenderId: "293629322300"
     });
-  }
+    */
+    firebase.database().ref('/api').once('value').then((snapshot) => {
+      var data = snapshot.val();
+      if(data == null){
+        //init        
+        firebase.database().ref().update({
+          'api/modifier':Math.random().toString(),
+          'api/modify_date': (new Date()).getTime()
+        })
+      }
+    });
 
+    
+  }
 
 
   getItemListening(): Observable<Object> {
@@ -78,8 +93,9 @@ export class CollectionService {
   push(path, data: Object): Promise<any> {
 
     return firebase.database().ref(path).once('value').then((snapshot) => {
-      let cnt = snapshot.val().length;
+      let cnt = snapshot.val()?snapshot.val().length:0;
       path = path + '/' + cnt;
+      console.log(path, data)
       return this.update(path, data);
     });
   }

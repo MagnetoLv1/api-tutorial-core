@@ -5,6 +5,7 @@ import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.comp
 
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { CollectionService } from '../services/collection.service';
+import { ElectronService } from 'ngx-electron';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -15,17 +16,27 @@ export class CollectionComponent implements OnInit {
   private collection: any = null;
   private selectItem: Object;
 
-  constructor(private collectionService: CollectionService, private toastr: ToastrService, public modal: Modal) {
+
+  constructor(private _electronService: ElectronService, private collectionService: CollectionService, private toastr: ToastrService, public modal: Modal) {
+
+    var Notification = this._electronService.remote.Notification;
+
   }
 
   ngOnInit() {
     //변경 수신대기
-    this.collectionService.getItemListening().subscribe( (data: any)=> {
+    this.collectionService.getItemListening().subscribe((data: any) => {
       //최초에는 toastr 를 띄우지 않음(collection==null)
       if (this.collection != null
         && data.modifier != this.collectionService.modifier) {
         //  console.log('누군가 Collection을 업데이트 하였습니다.')
-        this.toastr.info('누군가 Collection을 업데이트 하였습니다.');
+
+        const Notification = this._electronService.remote.Notification;
+        const noti = new Notification({
+          title: 'API Tutorial',
+          body: '누군가 Collection을 업데이트 하였습니다.'
+        });
+        noti.show();
       }
       this.collection = data;
     },
@@ -62,7 +73,7 @@ export class CollectionComponent implements OnInit {
           console.log(result);
         },
           (e) => {
-            console.log('Rejected',e);
+            console.log('Rejected', e);
           });
       });
   }

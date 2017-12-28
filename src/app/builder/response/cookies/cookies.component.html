@@ -1,0 +1,29 @@
+<table class="table" style="padding:5px">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Value</th>
+        <th>Path</th>
+        <th>Domain</th>
+        <th></th>
+      </tr>
+    </thead>
+  <tbody class="key-value-tbody">
+    <tr *ngFor="let cookie of cookies">
+      <td>
+          {{cookie.name}}
+      </td>
+      <td style="word-break: break-all;">
+          {{cookie.value}}
+      </td>
+      <td>
+          {{cookie.path}}
+      </td>
+
+      <td>
+          {{cookie.domain}}
+      </td>
+
+    </tr>
+  </tbody>
+</table>

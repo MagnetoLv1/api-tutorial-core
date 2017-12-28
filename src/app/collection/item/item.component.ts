@@ -17,18 +17,9 @@ export class ItemComponent implements OnInit {
   @Input() level: number;
   @Input() path: string;
 
-  mouseover: boolean = false;
+  hover: boolean = false;
   open: boolean = false;
-  @HostListener('mouseover')
-  onMouseOver() {
-    this.mouseover = true;
-  }
-
   @Output() outEventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  @HostListener('mouseout')
-  onMouseOut() {
-    this.mouseover = false;
-  }
   ipcRenderer: Electron.IpcRenderer;
   menu: Electron.Menu;
   menuItem: Electron.MenuItem;
@@ -96,12 +87,33 @@ export class ItemComponent implements OnInit {
     localStorage.setItem(this.path, state.toString());
   }
 
-
-  onEditClick($event) {
-
+  onAddlick($event){
+    console.log(this.path , this.path.length, MODE.CREATE);
     this.modal.open(EditComponent, overlayConfigFactory({
       isBlocking: false,
       mode: MODE.CREATE,
+      type: TYPE.REQUEST,
+      path: (this.path+'/item'),
+      item: [],
+    },
+      BSModalContext)).then((resultPromise) => {
+        return resultPromise.result.then((result) => {
+          console.log(result);
+        },
+          () => {
+            console.log('Rejected');
+          });
+      });
+    $event.stopPropagation(); //이벤트가 부모로 올라가지 못하게
+
+  }
+
+  onEditClick($event) {
+
+    console.log(this.path);
+    this.modal.open(EditComponent, overlayConfigFactory({
+      isBlocking: false,
+      mode: MODE.UPDATE,
       type: this.isFolder() ? TYPE.FOLDER : TYPE.REQUEST,
       path: this.path,
       item: this.item,
@@ -125,4 +137,12 @@ export class ItemComponent implements OnInit {
 
     $event.stopPropagation(); //이벤트가 부모로 올라가지 못하게
   }
+
+  onMouseenter($eve) {
+    this.hover = true;
+  } 
+  onMouseleave() {
+    this.hover = false;
+  }
+
 }

@@ -1,25 +1,25 @@
 <section id="response">
-  <div id="response-waiting-container" *ngIf="0">
+  <div id="response-waiting-container" *ngIf="response.status==-1">
     <h3>Loading...</h3>
     <button id="cancel-request" class="btn">Cancel request</button>
   </div>
-  <div id="response-failed-container" *ngIf="0">
+  <div id="response-failed-container" *ngIf="response.status!=200 && response.status!=-1">
     <h3>Could not get any response</h3>
 
     <p>
       This seems to be like an error connecting to
-      <span id="connection-error-url"></span>. The response status was 0.
+      <span id="connection-error-url"></span>. The response status was {{response.status}}.
       <br/> Check out the
       <a href="http://www.w3.org/TR/XMLHttpRequest/#the-status-attribute" target="_blank">W3C XMLHttpRequest Level 2 spec</a> for more details about when this happens.
     </p>
   </div>
-  <div id="response-success-container">
+  <div id="response-success-container" [hidden]="response.status!=200">
 
     <div class="row">
       <div class="col-lg-12" style="    padding-right: 20px;    padding-left: 20px;">
         <ul class="nav nav-tabs">
-          <li role="presentation" [ngClass]="{'active':display_response == 'header'}">
-            <a (click)="display_response='header'">Header</a>
+          <li role="presentation" [ngClass]="{'active':display_response == 'headers'}">
+            <a (click)="display_response='headers'">Header</a>
           </li>
           <li role="presentation" [ngClass]="{'active':display_response == 'body'}">
             <a (click)="display_response='body'">Body</a>
@@ -29,15 +29,15 @@
           </li>
         </ul>
 
-        <div *ngIf="display_response=='headers'">
-          {{headers | json}}
-        </div>
-        <div *ngIf="display_response=='body'">
+        <response-headers [headers]="headers" [hidden]="display_response!='headers'">
+
+        </response-headers>
+        <div [hidden]="display_response!='body'">
           <response-body [body]="body"></response-body>
         </div>
-        <div *ngIf="display_response=='cookies'">
-          {{cookies | json}}
-        </div>
+        <response-cookies [headers]="headers" [hidden]="display_response!='cookies'">
+        </response-cookies>
+
       </div>
     </div>
 

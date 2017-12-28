@@ -35,7 +35,8 @@ import { BuilderComponent } from './builder/builder.component';
 import { EditComponent } from './collection/edit/edit.component';
 import { HeaderComponent } from './builder/request/header/header.component';
 import { RawComponent } from './builder/request/raw/raw.component';
-
+import { ResponseHeadersComponent } from './builder/response/headers/headers.component';
+import { ResponseCookiesComponent } from './builder/response/cookies/cookies.component';
 
 
 
@@ -54,8 +55,9 @@ import { RawComponent } from './builder/request/raw/raw.component';
     BuilderComponent,
     EditComponent,
     HeaderComponent,
-    RawComponent
-
+    RawComponent,
+    ResponseHeadersComponent,
+    ResponseCookiesComponent
   ],
   imports: [
     BrowserModule,

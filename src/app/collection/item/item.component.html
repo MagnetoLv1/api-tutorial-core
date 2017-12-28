@@ -1,4 +1,4 @@
-<li (click)="onItemClick($event)" (contextmenu)="onContextMenu($event, item)">
+<li (click)="onItemClick($event)" (contextmenu)="onContextMenu($event, item)" (mouseenter)="onMouseenter()" (mouseleave)="onMouseleave()">
     <div style="height:20px;display:flex;">
         <div style="flex: 0 0 42px;">
             <span class="button switch " [ngClass]="nodeClass"></span>
@@ -8,7 +8,10 @@
         <div style="flex:1;overflow:hidden; flex-direction:row">
             <span class="node_name" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:block">{{item.name}}</span>
         </div>
-        <div style="flex: 0 0 30px;">
+        <div style="flex: 0 0 30px;" *ngIf="hover==true" >
+            <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onAddlick($event)" *ngIf="isFolder()">
+                <span class="ion-plus-round" aria-hidden="true"></span>
+            </button>
             <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onEditClick($event)">
                 <span class=" ion-edit" aria-hidden="true"></span>
             </button>

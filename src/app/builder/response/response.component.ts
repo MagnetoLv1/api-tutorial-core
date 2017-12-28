@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { IResponse } from "app/builder/request/interface/item";
+import { ItemResponse } from 'app/models/request';
 
 
 @Component({
@@ -7,24 +8,20 @@ import { IResponse } from "app/builder/request/interface/item";
   templateUrl: './response.component.html',
   styleUrls: ['./response.component.css']
 })
-export class ResponseComponent implements OnChanges, OnInit {
+export class ResponseComponent implements  OnInit {
 
   private _body: String;
 
   display_response:string='body';
-  @Input() response: IResponse;
+  @Input() response: ItemResponse;
   constructor() { }
-
-  ngOnChanges(changes: {}) {
-    console.log('ngOnChanges', changes);
-  }
 
   get body() {
     return this.response.body;
   }
 
   get cookies() {
-    return this.response.headers ? this.response.headers['Set-Cookie'] : '';
+    return this.response.headers ? this.response.headers['Set-Cookie'] :{};
   }
 
   get headers() {

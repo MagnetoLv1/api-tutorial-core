@@ -35,6 +35,7 @@ export class EditComponent implements OnInit {
     this.context = this.dialog.context;
     this.mode = this.dialog.context.mode;
     this.type = this.dialog.context.type;
+    console.log(this.type, this.dialog.context.type);
     if (this.context.item) {
       let item = JSON.parse(JSON.stringify(this.context.item));
       this.name = item.name
@@ -65,19 +66,28 @@ export class EditComponent implements OnInit {
   onSave() {
 
     let path = this.dialog.context.path;
-    
 
 
-    if (this.type == MODE.CREATE) {
-      this.collectionService.push(path, {
+    if (this.mode == MODE.CREATE) {
+      var item = (this.type== TYPE.FOLDER)? {
         'name': this.name,
         'description': this.description
-      }).then(() => {
+      } : {
+          'name': this.name,
+          'description': this.description,
+          'request': {
+            'description':'',
+            'method':'GET',
+            'url':'http://',
+          }
+        };
+
+      this.collectionService.push(path, item).then(() => {
         this.toastr.info('생성 되었습니다.');
         this.dialog.close();
       },
-        () => {
-          this.toastr.error('오류가 발생하였습니다.');
+        (error) => {
+          this.toastr.error(error);
           this.dialog.close();
         })
     } else {
@@ -89,7 +99,8 @@ export class EditComponent implements OnInit {
         this.toastr.info('수정되었습니다.');
         this.dialog.close();
       },
-        () => {
+        (error) => {
+          console.log(error);
           this.toastr.error('오류가 발생하였습니다.');
           this.dialog.close();
         })

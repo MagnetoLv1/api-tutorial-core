@@ -8,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class RawComponent implements OnInit {
 
   
-  @Input() raw: any;
+  @Input() raw: string;
   constructor() { }
 
   ngOnInit() {

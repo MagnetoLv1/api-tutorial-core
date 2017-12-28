@@ -150,3 +150,12 @@
 .button-bar__button:focus {
   outline: 0;
 }
+
+
+.description{
+  font-size: 11px;
+  word-break: break-word;
+}
+.disabled{
+  pointer-events: none;
+}
