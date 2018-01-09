@@ -22,7 +22,7 @@ export class RequestModalContext extends BSModalContext {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css']
 })
-export class EditComponent implements OnInit {
+export class EditComponent  {
   context: RequestModalContext;
 
   mode: number = MODE.CREATE;
@@ -54,10 +54,6 @@ export class EditComponent implements OnInit {
     return this.type == MODE.CREATE ? 'Create' : 'Update';
   }
 
-
-
-  ngOnInit() {
-  }
 
   onClose() {
     this.dialog.close();

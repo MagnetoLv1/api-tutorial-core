@@ -1,8 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NativeRequestService } from "../../services/native-request.service";
-import { IRequest, IResponse, IItem } from "./interface/item";
 import { SendService } from 'app/services/send.service';
-import { ItemRequest, Item, ItemResponse, Keyvalue, Body } from 'app/models/request';
+import { ItemRequest, Item, ItemResponse, Keyvalue, Body, ContextType } from 'app/models/item';
+import { WikiService } from 'app/services/wiki.service';
+import { ToastrService } from 'ngx-toastr';
+import { WikiLoginComponent } from 'app/builder/wiki/login/login.component';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { WikiTemplate } from 'app/services/wiki.api.template';
 
 @Component({
   selector: 'app-request',
@@ -15,7 +19,7 @@ export class RequestComponent implements OnInit {
   @Output() saveEvent = new EventEmitter<String>();
 
   show_description: Boolean = false;
-  constructor(private nativeRequestService: NativeRequestService, private sendService: SendService) {
+  constructor(private sendService: SendService, private wikiService: WikiService, private toastr: ToastrService, public modal: Modal) {
   }
 
 
@@ -55,17 +59,17 @@ export class RequestComponent implements OnInit {
   }
   set method(val) {
     this.item.request.method = val;
-    if(this.item.request.method == 'GET'){
+    if (this.item.request.method == 'GET') {
       this.item.request.body = null;
-    }else{
-      if(!this.item.request.body){
+    } else {
+      if (!this.item.request.body) {
         this.item.request.body = new Body();
       }
     }
   }
 
   get mode() {
-    return this.item.request.body ? this.item.request.body.mode : 'urlencoded';
+    return this.item.request.body ? this.item.request.body.mode : ContextType.urlencoded;
   }
 
   set mode(value: string) {
@@ -78,6 +82,7 @@ export class RequestComponent implements OnInit {
 
   onSend() {
 
+    console.log('is login : ', this.wikiService.isLogin())
     this.responseChange.emit(new ItemResponse(-1));
     this.sendService.request(this.item.request).then((response) => {
       this.responseChange.emit(response);
@@ -89,5 +94,25 @@ export class RequestComponent implements OnInit {
 
   onSave() {
     this.saveEvent.emit('save');
+  }
+
+  onWiki() {
+    if (this.wikiService.isLogin()) {
+        console.debug('로그인되었음');
+        console.log(WikiTemplate.api(this.item));
+        
+    } else {
+
+      this.modal.open(WikiLoginComponent, overlayConfigFactory({},
+        BSModalContext)).then((resultPromise) => {
+          return resultPromise.result.then((result) => {
+            console.log(result);
+          },
+            (e) => {
+              console.log('Rejected', e);
+            });
+        });
+    }
+
   }
 }

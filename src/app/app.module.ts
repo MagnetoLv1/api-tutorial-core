@@ -17,10 +17,6 @@ import { ToastrModule } from 'ngx-toastr';
 
 
 import { AppComponent } from './app.component';
-import { CollectionService } from './services/collection.service';
-import { FilesystemService } from './services/filesystem.service';
-import { SendService } from './services/send.service';
-import { NativeRequestService } from "./services/native-request.service";
 import { CollectionComponent } from './collection/collection.component';
 import { ItemComponent } from './collection/item/item.component';
 import { RequestComponent } from './builder/request/request.component';
@@ -37,7 +33,12 @@ import { HeaderComponent } from './builder/request/header/header.component';
 import { RawComponent } from './builder/request/raw/raw.component';
 import { ResponseHeadersComponent } from './builder/response/headers/headers.component';
 import { ResponseCookiesComponent } from './builder/response/cookies/cookies.component';
+import { WikiLoginComponent } from './builder/wiki/login/login.component';
 
+import { CollectionService } from './services/collection.service';
+import { FilesystemService } from './services/filesystem.service';
+import { SendService } from './services/send.service';
+import { WikiService } from './services/wiki.service';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ResponseCookiesComponent } from './builder/response/cookies/cookies.com
     HeaderComponent,
     RawComponent,
     ResponseHeadersComponent,
-    ResponseCookiesComponent
+    ResponseCookiesComponent,
+    WikiLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -72,8 +74,8 @@ import { ResponseCookiesComponent } from './builder/response/cookies/cookies.com
     ToastrModule.forRoot(), // ToastrModule added
     BrowserAnimationsModule,// required animations module
   ],
-  providers: [CollectionService, SendService, NativeRequestService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
+  providers: [CollectionService, SendService, WikiService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
   bootstrap: [AppComponent],
-  entryComponents: [EditComponent]
+  entryComponents: [EditComponent,WikiLoginComponent]
 })
 export class AppModule { }

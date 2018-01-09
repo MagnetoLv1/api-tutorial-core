@@ -16,6 +16,7 @@ export class CollectionService {
   }
 
   init(){
+    /*
     firebase.initializeApp({
       apiKey: "AIzaSyCJLpKoVeOSlUsVquDyR9o4DQT7hg6Br4o",
       authDomain: "test-b8174.firebaseapp.com",
@@ -24,7 +25,7 @@ export class CollectionService {
       storageBucket: "apiviewer.appspot.com",
       messagingSenderId: "293629322300"
     });
-    /*
+    */
     firebase.initializeApp({
       apiKey: "AIzaSyBM_wKB_LYG2bdF-iFYaIaFHNcgetNCFPI",
       authDomain: "apiviewer.firebaseapp.com",
@@ -33,7 +34,6 @@ export class CollectionService {
       storageBucket: "apiviewer.appspot.com",
       messagingSenderId: "293629322300"
     });
-    */
     firebase.database().ref('/api').once('value').then((snapshot) => {
       var data = snapshot.val();
       if(data == null){

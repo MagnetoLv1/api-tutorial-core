@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IKeyvalue } from 'app/builder/request/interface/item';
+import { Keyvalue } from 'app/models/item';
 
 @Component({
   selector: 'response-headers',
@@ -8,7 +8,7 @@ import { IKeyvalue } from 'app/builder/request/interface/item';
 })
 export class ResponseHeadersComponent implements OnInit {
 
-  @Input() headers: Array<IKeyvalue>;;
+  @Input() headers: Array<Keyvalue>;;
   constructor() { }
 
   ngOnChanges(changes: {}) {

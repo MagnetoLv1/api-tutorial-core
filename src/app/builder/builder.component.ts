@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Broadcaster } from "ng2-broadcast";
 import { CollectionService } from "app/services/collection.service";
-import { IItem, IKeyvalue, IResponse, IBody, IRequest } from "./request/interface/item";
-import { ItemRequest, Item, ItemResponse, Keyvalue } from 'app/models/request';
+import { ItemRequest, Item, ItemResponse, Keyvalue, ContextType } from 'app/models/item';
 
 
 @Component({
@@ -12,7 +11,7 @@ import { ItemRequest, Item, ItemResponse, Keyvalue } from 'app/models/request';
 })
 export class BuilderComponent implements OnInit {
 
-  item: Item = new Item();
+  item: Item = new Item('api','New Request');
   response:ItemResponse = new ItemResponse();
   constructor(private broadcaster: Broadcaster, private collectionService: CollectionService) {
 
@@ -31,7 +30,7 @@ export class BuilderComponent implements OnInit {
         this.addBlankInput(this.item.request, 'header');
         if(this.item.request.body){
           this.addBlankInput(this.item.request.body, 'formdata');
-          this.addBlankInput(this.item.request.body, 'urlencoded');
+          this.addBlankInput(this.item.request.body, ContextType.urlencoded);
         }
       });
   }
@@ -46,7 +45,7 @@ export class BuilderComponent implements OnInit {
 
   onSaveEvent() {
     let request = JSON.parse(JSON.stringify(this.item.request));
-    this.emptyDataRemove(request.body, 'urlencoded');
+    this.emptyDataRemove(request.body, ContextType.urlencoded);
     this.emptyDataRemove(request.body, 'formdata');
     this.emptyDataRemove(request, 'header');
     this.collectionService.update(this.item.path + '/request', request)

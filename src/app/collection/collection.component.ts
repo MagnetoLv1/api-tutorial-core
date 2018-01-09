@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.component';
 
-import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { CollectionService } from '../services/collection.service';
 import { ElectronService } from 'ngx-electron';
 @Component({

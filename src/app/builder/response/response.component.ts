@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IResponse } from "app/builder/request/interface/item";
-import { ItemResponse } from 'app/models/request';
+import { ItemResponse } from 'app/models/item';
 
 
 @Component({

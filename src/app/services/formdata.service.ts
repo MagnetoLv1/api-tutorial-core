@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IBody } from 'app/builder/request/interface/item';
+import { Body, ContextType } from 'app/models/item';
 
 @Injectable()
 export class FormdataService {
@@ -7,15 +7,15 @@ export class FormdataService {
   static LINE_BREAK: string = '\r\n';
   static DEFAULT_CONTENT_TYPE = 'application/octet-stream';
   private _boundary: string = '';
-  private _body: IBody
-  constructor(body: IBody) {
+  private _body: Body
+  constructor(body: Body) {
     this._body = body;
   }
 
   public getContentType() {
-    if (this._body.mode == 'urlencoded') {
+    if (this._body.mode == ContextType.urlencoded) {
       return 'application/x-www-form-urlencoded';
-    } else if (this._body.mode == 'formdata') {
+    } else if (this._body.mode == ContextType.formdata) {
       return 'multipart/form-data; boundary=' + this.getBoundary();
     }
     else{
@@ -25,7 +25,7 @@ export class FormdataService {
 
   public getBody() {
     var body = '';
-    if (this._body.mode == 'urlencoded') {
+    if (this._body.mode == ContextType.urlencoded) {
       var param = [];
       for( var key in this._body.urlencoded){
           var data = this._body.urlencoded[key];

@@ -6,7 +6,7 @@ import { ElectronService } from 'ngx-electron';
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import { FormdataService } from 'app/services/formdata.service';
-import { Keyvalue, ItemResponse, ItemRequest } from 'app/models/request';
+import { Keyvalue, ItemResponse, ItemRequest } from 'app/models/item';
 
 
 @Injectable()
