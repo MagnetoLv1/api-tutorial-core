@@ -14,6 +14,7 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { PrettyJsonModule, SafeJsonPipe } from 'angular2-prettyjson';   //Json Prtty 
 import { ToastrModule } from 'ngx-toastr';
+import { DragulaModule } from 'ng2-dragula';
 
 
 import { AppComponent } from './app.component';
@@ -34,11 +35,14 @@ import { RawComponent } from './builder/request/raw/raw.component';
 import { ResponseHeadersComponent } from './builder/response/headers/headers.component';
 import { ResponseCookiesComponent } from './builder/response/cookies/cookies.component';
 import { WikiLoginComponent } from './builder/wiki/login/login.component';
+import { ResponseExamplesComponent } from './builder/response/examples/examples/examples.component';
 
 import { CollectionService } from './services/collection.service';
 import { FilesystemService } from './services/filesystem.service';
 import { SendService } from './services/send.service';
 import { WikiService } from './services/wiki.service';
+import { HttpService } from './services/http.service';
+import { BodySavePromptComponent } from './builder/response/body/save.prompt/save.prompt.component';
 
 
 @NgModule({
@@ -59,7 +63,9 @@ import { WikiService } from './services/wiki.service';
     RawComponent,
     ResponseHeadersComponent,
     ResponseCookiesComponent,
-    WikiLoginComponent
+    WikiLoginComponent,
+    ResponseExamplesComponent,
+    BodySavePromptComponent
   ],
   imports: [
     BrowserModule,
@@ -73,9 +79,10 @@ import { WikiService } from './services/wiki.service';
     BootstrapModalModule,
     ToastrModule.forRoot(), // ToastrModule added
     BrowserAnimationsModule,// required animations module
+    DragulaModule, //Drag and drop so simple it hurts
   ],
-  providers: [CollectionService, SendService, WikiService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
+  providers: [CollectionService, SendService, WikiService, HttpService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
   bootstrap: [AppComponent],
-  entryComponents: [EditComponent,WikiLoginComponent]
+  entryComponents: [EditComponent,WikiLoginComponent, BodySavePromptComponent]
 })
 export class AppModule { }

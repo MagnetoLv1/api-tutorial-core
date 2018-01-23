@@ -19,4 +19,12 @@ export class GroupComponent implements OnInit {
     return this.level > 0 ? 'line' : 'ztree';
   }
 
+  keys(){
+    return Object.keys(this.item);
+  }
+
+  get itemValue(){
+    return Object.values(this.item);
+  }
+
 }

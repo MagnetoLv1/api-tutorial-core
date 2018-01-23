@@ -4,67 +4,67 @@ import * as firebase from 'firebase';
 import 'rxjs/add/operator/map'
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
+import { ElectronService } from 'ngx-electron';
 
 @Injectable()
 export class CollectionService {
 
   public modifier: string
-  constructor(private http: Http) {
+  constructor(private http: Http, private _electronService: ElectronService) {
     this.modifier = Math.random().toString();
 
     this.init();
   }
 
-  init(){
-    /*
+  init() {
+    let env = this._electronService.remote.process.env;
     firebase.initializeApp({
-      apiKey: "AIzaSyCJLpKoVeOSlUsVquDyR9o4DQT7hg6Br4o",
-      authDomain: "test-b8174.firebaseapp.com",
-      databaseURL: "https://test-b8174.firebaseio.com",
-      projectId: "test-b8174",
-      storageBucket: "apiviewer.appspot.com",
-      messagingSenderId: "293629322300"
-    });
-    */
-    firebase.initializeApp({
-      apiKey: "AIzaSyBM_wKB_LYG2bdF-iFYaIaFHNcgetNCFPI",
-      authDomain: "apiviewer.firebaseapp.com",
-      databaseURL: "https://apiviewer.firebaseio.com",
-      projectId: "apiviewer",
-      storageBucket: "apiviewer.appspot.com",
-      messagingSenderId: "293629322300"
-    });
-    firebase.database().ref('/api').once('value').then((snapshot) => {
-      var data = snapshot.val();
-      if(data == null){
-        //init        
-        firebase.database().ref().update({
-          'api/modifier':Math.random().toString(),
-          'api/modify_date': (new Date()).getTime()
-        })
-      }
+      apiKey: env.apiKey,
+      authDomain: env.authDomain,
+      databaseURL: env.databaseURL,
+      projectId: env.projectId,
+      storageBucket: env.storageBucket,
+      messagingSenderId: env.messagingSenderId
     });
 
-    
   }
 
 
   getItemListening(): Observable<Object> {
     const collectionSubject: Subject<Object> = new Subject<Object>();
-    var itemRef = firebase.database().ref('/api');
-    itemRef.on('value', (snapshot) => {
+    firebase.database().ref().on('value', (snapshot) => {
       collectionSubject.next(snapshot.val());
     });
     return collectionSubject.asObservable();
   }
 
 
-  update(path, item): Promise<any> {
+  get(path): Observable<Object> {
+    const collectionSubject: Subject<Object> = new Subject<Object>();
+    var itemRef = firebase.database().ref(path).once('value').then((snapshot) => {
+      collectionSubject.next(snapshot.val());
+    });
+    return collectionSubject.asObservable();
+  }
 
-    let updates = {}
-    updates[path] = item;
-    updates['api/modifier'] = this.modifier;
-    updates['api/modify_date'] = (new Date()).getTime();
+  private _items: any = {};
+  setItem(path: string, data: any) {
+    this._items[path] = data;
+    return this;
+  }
+  update(path?: string, data?: any): Promise<any> {
+
+    let updates = {};
+    if (arguments.length) {
+      updates[path] = data;
+    }
+    //setItem 
+    for (let key of Object.keys(this._items)) {
+      updates[key] = this._items[key];
+    }
+    this._items = {};
+    updates['modifier'] = this.modifier;
+    updates['modify_date'] = (new Date()).getTime();
     return firebase.database().ref().update(updates);
   }
 
@@ -73,29 +73,28 @@ export class CollectionService {
   }
 
 
-  /**
-   * 배열 형식인 경우 index 유지를 위해 delete 가닌 slice 를 사용한다
-   * @param path 
-   */
-  slice(path): Promise<any> {
 
-    let p = path.split('/');
-    let index = p.pop();
-    let parentPath = p.join('/');
-
-    return firebase.database().ref(parentPath).once('value').then((snapshot) => {
-      var data = snapshot.val();
-      data.splice(index, 1);  //아이템 삭제
-      return this.update(parentPath, data);
-    });
+  remove(path): Promise<any> {
+    return firebase.database().ref(path).remove();
   }
 
+  /**
+   * 
+   */
   push(path, data: Object): Promise<any> {
 
-    return firebase.database().ref(path).once('value').then((snapshot) => {
-      let cnt = snapshot.val()?snapshot.val().length:0;
-      path = path + '/' + cnt;
-      console.log(path, data)
+    let ref: firebase.database.Reference = (!path) ? firebase.database().ref() : firebase.database().ref(path);
+
+
+    return ref.child('item').orderByKey().limitToLast(1).once('value').then((snapshot) => {
+      let val, index = 0;
+      if (val = snapshot.val()) {
+        let key = Object.keys(val)[0];
+        index = parseInt(key) + 1;
+      }
+      path = (!path) ?
+        ('item/' + index) :
+        (path + '/item/' + index);
       return this.update(path, data);
     });
   }

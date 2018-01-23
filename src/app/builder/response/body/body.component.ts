@@ -1,7 +1,11 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, NgZone, Output, EventEmitter } from '@angular/core';
 import { FilesystemService } from '../../../services/filesystem.service';
 import * as Electron from 'electron';
 import * as fs from 'fs';
+import { Keyvalue } from 'app/models/item';
+import { Overlay, overlayConfigFactory } from 'angular2-modal';
+import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
+import { BodySavePromptComponent } from 'app/builder/response/body/save.prompt/save.prompt.component';
 @Component({
   selector: 'response-body',
   templateUrl: './body.component.html',
@@ -10,12 +14,14 @@ import * as fs from 'fs';
 export class BodyComponent implements OnInit {
 
   @Input() body: string = '';
+  @Input() examples: Array<Keyvalue> = [];
   reader: FileReader;
-  _format: string='raw';
+  _format: string = 'raw';
 
   bodyJson: string;
   height: number;
-  constructor(private zone: NgZone, private filesystemService: FilesystemService) {
+  @Output() saveEvent = new EventEmitter<Keyvalue>();
+  constructor(private zone: NgZone, private filesystemService: FilesystemService,  public modal: Modal) {
   }
 
   ngOnInit() {
@@ -27,10 +33,10 @@ export class BodyComponent implements OnInit {
     switch (this._format) {
       case 'pretty':
         this.bodyToJson();
-        this.height=0;
+        this.height = 0;
         break;
       case 'raw':
-        this.height=0;
+        this.height = 0;
         break;
       case 'privew':
         this.bodyToWebview();
@@ -81,5 +87,25 @@ export class BodyComponent implements OnInit {
       })
       webview.loadURL(path);
     })
+  }
+
+  onSave() {
+    
+    this.modal.open(BodySavePromptComponent, overlayConfigFactory({},
+      BSModalContext)).then((resultPromise) => {
+        return resultPromise.result.then((name) => {
+          let body;
+          try{
+            body = JSON.stringify(JSON.parse(this.body), null, 2);
+          }catch(error){
+            body = this.body;
+          }
+          let example = new Keyvalue(name, body);
+          console.log('push',example)
+          this.examples.push(example);
+          this.saveEvent.emit(example);
+        });
+      });
+
   }
 }

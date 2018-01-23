@@ -13,33 +13,33 @@ export class FormdataService {
   }
 
   public getContentType() {
-    if (this._body.mode == ContextType.urlencoded) {
+    if (this._body && this._body.mode == ContextType.urlencoded) {
       return 'application/x-www-form-urlencoded';
-    } else if (this._body.mode == ContextType.formdata) {
+    } else if (this._body && this._body.mode == ContextType.formdata) {
       return 'multipart/form-data; boundary=' + this.getBoundary();
     }
-    else{
+    else {
       return 'text/plain';
     }
   }
 
   public getBody() {
     var body = '';
-    if (this._body.mode == ContextType.urlencoded) {
+    if (this._body && this._body.mode == ContextType.urlencoded) {
       var param = [];
-      for( var key in this._body.urlencoded){
-          var data = this._body.urlencoded[key];
-          if(data.key){
-            param.push(data.key +'='+ encodeURI(data.value));
-          }
+      for (var key in this._body.urlencoded) {
+        var data = this._body.urlencoded[key];
+        if (data.key) {
+          param.push(data.key + '=' + encodeURI(data.value));
+        }
       }
       body = param.join('&');
-    } else if (this._body.mode == 'formdata') {
-      for( var key in this._body.formdata){
-          var data = this._body.formdata[key];
-          if(data.key){
-            body += this._multiPartHeader(data.key, data.value);
-          }
+    } else if (this._body && this._body.mode == 'formdata') {
+      for (var key in this._body.formdata) {
+        var data = this._body.formdata[key];
+        if (data.key) {
+          body += this._multiPartHeader(data.key, data.value);
+        }
       }
       body += this._lastBoundary();
     }
@@ -54,10 +54,10 @@ export class FormdataService {
     return this._boundary;
   };
 
-  private _multiPartHeader(key, value) {   
-    return '--' + this.getBoundary() + FormdataService.LINE_BREAK 
-                   + 'Content-Disposition: form-data; name="'+key+'"' + FormdataService.LINE_BREAK+ FormdataService.LINE_BREAK
-                   + value + FormdataService.LINE_BREAK;
+  private _multiPartHeader(key, value) {
+    return '--' + this.getBoundary() + FormdataService.LINE_BREAK
+      + 'Content-Disposition: form-data; name="' + key + '"' + FormdataService.LINE_BREAK + FormdataService.LINE_BREAK
+      + value + FormdataService.LINE_BREAK;
   }
 
   private _multiPartFooter() {

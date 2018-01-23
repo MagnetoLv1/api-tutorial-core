@@ -1,5 +1,5 @@
 <div id="main" class="content">
   <app-request [item]="item" (responseChange)="onResponseChange($event)"  (saveEvent)="onSaveEvent($event)"></app-request>
   <hr/>
-  <app-response [response]="response"></app-response>
+  <app-response [item]="item" [response]="response"></app-response>
 </div>

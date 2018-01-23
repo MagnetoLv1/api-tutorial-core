@@ -7,6 +7,7 @@ import { WikiLoginComponent } from 'app/builder/wiki/login/login.component';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { WikiTemplate } from 'app/services/wiki.api.template';
+import { CollectionService } from 'app/services/collection.service';
 
 @Component({
   selector: 'app-request',
@@ -19,7 +20,7 @@ export class RequestComponent implements OnInit {
   @Output() saveEvent = new EventEmitter<String>();
 
   show_description: Boolean = false;
-  constructor(private sendService: SendService, private wikiService: WikiService, private toastr: ToastrService, public modal: Modal) {
+  constructor(private sendService: SendService, private wikiService: WikiService, private collectionService: CollectionService, private toastr: ToastrService, public modal: Modal) {
   }
 
 
@@ -80,10 +81,11 @@ export class RequestComponent implements OnInit {
     return this.item.request.header;
   }
 
+  /**
+   * 
+   */
   onSend() {
 
-    console.log('is login : ', this.wikiService.isLogin())
-    this.responseChange.emit(new ItemResponse(-1));
     this.sendService.request(this.item.request).then((response) => {
       this.responseChange.emit(response);
     }).catch((e) => {
@@ -98,21 +100,30 @@ export class RequestComponent implements OnInit {
 
   onWiki() {
     if (this.wikiService.isLogin()) {
-        console.debug('로그인되었음');
-        console.log(WikiTemplate.api(this.item));
-        
+      console.debug('로그인 되었음');
+
+
+      //부모가 생성되어있는지 보고      
+      this.wikiService.parentWiki(this.item).then((parentName) => {
+        //본인 WIKI생성
+        let title = WikiTemplate.api(this.item, parentName);
+        this.wikiService.editWiki(this.item.path, this.item.name, title).then(() => {
+          this.toastr.success("WIKI에 등록되었습니다.");
+        }).catch((error) => {
+          this.toastr.error(`WIKI 등록시 오류가 방생하였습니다. 관리자에게 문의바랍니다. [${error}]`);
+        })
+      }).catch((error) => {
+        this.toastr.error(`그룹 WIKI 등록시 오류가 방생하였습니다. 관리자에게 문의바랍니다. [${error}]`);
+      })
+
     } else {
 
       this.modal.open(WikiLoginComponent, overlayConfigFactory({},
         BSModalContext)).then((resultPromise) => {
           return resultPromise.result.then((result) => {
             console.log(result);
-          },
-            (e) => {
-              console.log('Rejected', e);
-            });
+          });
         });
     }
-
   }
 }

@@ -1,0 +1,11 @@
+<ul class="nav nav-tabs mt-3">
+  <li role="presentation" *ngFor="let example of examples;let i = index" [ngClass]="{'active':selectIndex==i}">
+    <a (click)="selectIndex=i">{{example.key}} 
+        <span class="glyphicon glyphicon-remove" (click)="onDelete($event,i)"  *ngIf="selectIndex==i"></span></a>
+  </li>
+</ul>
+<textarea  [(ngModel)]='example.value' style="width:100%" rows="{{rows}}">                             
+  </textarea>
+<button style="position:absolute; top:96px;right:40px;" (click)="onSave()" *ngIf="examples.length">
+  <span class="glyphicon ion-archive" style="flex:0 0 20px;font-size:27px"></span>
+</button>

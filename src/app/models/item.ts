@@ -1,3 +1,5 @@
+import { CONFIG } from "app/enums";
+
 export enum ContextType {
     urlencoded = 'urlencoded',
     formdata = 'formdata',
@@ -9,7 +11,7 @@ export enum ContextType {
   }
 
 export class Item {
-    constructor(public path: string = 'api',
+    constructor(public path: string = CONFIG.root_path,
     public name: string='',
     public description:string='',
     public request: ItemRequest = new ItemRequest(),
@@ -34,8 +36,8 @@ export class Keyvalue {
 
     constructor(public key: string = '',
         public value: string = '',
-        public description?: string,
-        public type?: string) {
+        public description: string='',
+        public type: string='') {
     }
 }
 
@@ -44,6 +46,7 @@ export class ItemResponse {
     constructor(public status: number = 0,
         public statusText: string = '',
         public headers: Array<Keyvalue> = [],
-        public body: string = '') {
+        public body: string = '',
+        public examples: Array<Keyvalue> = []) {
     }
 }

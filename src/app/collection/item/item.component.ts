@@ -16,17 +16,14 @@ export class ItemComponent implements OnInit {
   @Input() item: any;
   @Input() level: number;
   @Input() path: string;
+  @Input() index: Number = 0;
 
   hover: boolean = false;
   open: boolean = false;
   @Output() outEventEmitter: EventEmitter<any> = new EventEmitter<any>();
-  ipcRenderer: Electron.IpcRenderer;
-  menu: Electron.Menu;
-  menuItem: Electron.MenuItem;
 
   constructor(private broadcaster: Broadcaster, private collectionService: CollectionService,
-    private electronService: ElectronService, public modal: Modal, private toastr: ToastrService, ) {
-    this.ipcRenderer = electronService.ipcRenderer;
+    private electronService: ElectronService, public modal: Modal, private toastr: ToastrService) {
 
   }
 
@@ -74,7 +71,7 @@ export class ItemComponent implements OnInit {
 
 
   isFolder(): boolean {
-    return this.item.request ? false : true;
+    return this.item && this.item.request ? false : true;
   }
 
   /**
@@ -87,13 +84,13 @@ export class ItemComponent implements OnInit {
     localStorage.setItem(this.path, state.toString());
   }
 
-  onAddlick($event){
-    console.log(this.path , this.path.length, MODE.CREATE);
+  onAddlick($event) {
+    console.log(this.path, this.path.length, MODE.CREATE);
     this.modal.open(EditComponent, overlayConfigFactory({
       isBlocking: false,
       mode: MODE.CREATE,
       type: TYPE.REQUEST,
-      path: (this.path+'/item'),
+      path: this.path,
       item: [],
     },
       BSModalContext)).then((resultPromise) => {
@@ -109,8 +106,6 @@ export class ItemComponent implements OnInit {
   }
 
   onEditClick($event) {
-
-    console.log(this.path);
     this.modal.open(EditComponent, overlayConfigFactory({
       isBlocking: false,
       mode: MODE.UPDATE,
@@ -130,17 +125,20 @@ export class ItemComponent implements OnInit {
   }
 
   onDeleteClick($event) {
-    console.log(this.path);
-    this.collectionService.slice(this.path).then(() => {
-      this.toastr.info('삭제 되었습니다.');
-    });
 
+    if (confirm(`[${this.item.name}]를 삭제하시겠습니까?`)) {
+      this.collectionService.remove(this.path).then(() => {
+        this.toastr.info('삭제 되었습니다.');
+      }).catch((error) => {
+        this.toastr.error(`삭제시 오류가 발생하였습니다.\n[${error.message}]`)
+      });
+    }
     $event.stopPropagation(); //이벤트가 부모로 올라가지 못하게
   }
 
   onMouseenter($eve) {
     this.hover = true;
-  } 
+  }
   onMouseleave() {
     this.hover = false;
   }

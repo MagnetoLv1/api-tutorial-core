@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ItemResponse } from 'app/models/item';
+import { ItemResponse, Item } from 'app/models/item';
+import { CollectionService } from 'app/services/collection.service';
 
 
 @Component({
@@ -10,10 +11,31 @@ import { ItemResponse } from 'app/models/item';
 export class ResponseComponent implements  OnInit {
 
   private _body: String;
-
   display_response:string='body';
+  @Input() item: Item;
   @Input() response: ItemResponse;
-  constructor() { }
+  constructor( private collectionService: CollectionService) { }
+
+  get examples(){
+    if(!this.item.response){
+      this.item.response = new ItemResponse();
+    }
+    if(!this.item.response.examples){
+      this.item.response.examples = []; 
+    }
+    return this.item.response.examples;
+  }
+
+  
+  onResponseSaveEvent(example){
+    this.collectionService.push(this.item.path + '/response/examples',example);  
+  }
+
+  onResponseUpdateEvent(index){
+    
+
+  }
+
 
   get body() {
     return this.response.body;
@@ -23,9 +45,11 @@ export class ResponseComponent implements  OnInit {
     return this.response.headers ? this.response.headers['Set-Cookie'] :{};
   }
 
-  get headers() {
+  get headers() { 
     return this.response.headers;
   }
+
+
   ngOnInit() {
   }
 

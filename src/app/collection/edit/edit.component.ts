@@ -22,7 +22,7 @@ export class RequestModalContext extends BSModalContext {
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css']
 })
-export class EditComponent  {
+export class EditComponent {
   context: RequestModalContext;
 
   mode: number = MODE.CREATE;
@@ -65,16 +65,16 @@ export class EditComponent  {
 
 
     if (this.mode == MODE.CREATE) {
-      var item = (this.type== TYPE.FOLDER)? {
+      var item = (this.type == TYPE.FOLDER) ? {
         'name': this.name,
         'description': this.description
       } : {
           'name': this.name,
           'description': this.description,
           'request': {
-            'description':'',
-            'method':'GET',
-            'url':'http://',
+            'description': '',
+            'method': 'GET',
+            'url': 'http://',
           }
         };
 
@@ -83,21 +83,23 @@ export class EditComponent  {
         this.dialog.close();
       },
         (error) => {
-          this.toastr.error(error);
+          this.toastr.error(`오류가 발생하였습니다. [${error.message}]`);
           this.dialog.close();
         })
     } else {
 
-      this.context.item.name = this.name;
-      this.context.item.description = this.description;
+      this.collectionService
+        .setItem(path + '/name', this.name)
+        .setItem(path + '/description', this.description ? this.description : '')
+        .update()
+
 
       this.collectionService.update(path, this.context.item).then(() => {
         this.toastr.info('수정되었습니다.');
         this.dialog.close();
       },
         (error) => {
-          console.log(error);
-          this.toastr.error('오류가 발생하였습니다.');
+          this.toastr.error(`오류가 발생하였습니다. [${error.message}]`);
           this.dialog.close();
         })
     }

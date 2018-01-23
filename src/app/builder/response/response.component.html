@@ -27,17 +27,23 @@
           <li role="presentation" [ngClass]="{'active':display_response == 'cookies'}">
             <a (click)="display_response='cookies'">Cookies</a>
           </li>
+          <li role="presentation" [ngClass]="{'active':display_response == 'examples'}">
+            <a (click)="display_response='examples'">Examples</a>
+          </li>
         </ul>
 
         <response-headers [headers]="headers" [hidden]="display_response!='headers'">
 
         </response-headers>
         <div [hidden]="display_response!='body'">
-          <response-body [body]="body"></response-body>
+          <response-body [body]="body" [examples]="examples"  (saveEvent)="onResponseSaveEvent($event)"></response-body>
         </div>
         <response-cookies [headers]="headers" [hidden]="display_response!='cookies'">
         </response-cookies>
 
+        <response-examples [examples]="examples" [path]="item.path" [hidden]="display_response!='examples'">
+
+        </response-examples>
       </div>
     </div>
 

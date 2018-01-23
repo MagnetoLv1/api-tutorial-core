@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Broadcaster } from "ng2-broadcast";
 import { CollectionService } from "app/services/collection.service";
 import { ItemRequest, Item, ItemResponse, Keyvalue, ContextType } from 'app/models/item';
+import { CONFIG } from 'app/enums';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { ItemRequest, Item, ItemResponse, Keyvalue, ContextType } from 'app/mode
 })
 export class BuilderComponent implements OnInit {
 
-  item: Item = new Item('api','New Request');
+  item: Item = new Item(CONFIG.root_path,'New Request');
   response:ItemResponse = new ItemResponse();
   constructor(private broadcaster: Broadcaster, private collectionService: CollectionService) {
 
@@ -37,6 +38,7 @@ export class BuilderComponent implements OnInit {
 
   ngOnInit() {
   }
+  
 
 
   onResponseChange(response: ItemResponse) {

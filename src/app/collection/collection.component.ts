@@ -6,6 +6,8 @@ import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.comp
 
 import { CollectionService } from '../services/collection.service';
 import { ElectronService } from 'ngx-electron';
+import { DragulaService } from 'ng2-dragula';
+import { ElementRef } from '@angular/core/src/linker/element_ref';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -17,11 +19,97 @@ export class CollectionComponent implements OnInit {
   private selectItem: Object;
 
 
-  constructor(private _electronService: ElectronService, private collectionService: CollectionService, private toastr: ToastrService, public modal: Modal) {
+  private dragIndex;
+  constructor(private _electronService: ElectronService,
+    private collectionService: CollectionService,
+    private toastr: ToastrService,
+    public modal: Modal,
+    private dragulaService: DragulaService) {
 
     var Notification = this._electronService.remote.Notification;
 
+    dragulaService.drag.subscribe((value) => {
+      let [id, dragElm, dragGroupElm] = value;
+      this.dragIndex = this.domIndexOf(dragElm, dragGroupElm);
+      console.log(this.dragIndex);
+    });
+    dragulaService.drop.subscribe((value) => {
+
+      let [id, dragElm, dropGroupElm, dragGroupElm] = value;
+      this.switchItem(dragElm, dropGroupElm, dragGroupElm);
+    });
   }
+
+
+  /**
+   * collection의  item을 경로로 가져오기
+   */
+  private getDepthItem(item, paths) {
+    if (typeof paths === 'string') {
+      paths = paths.split('/');
+    }
+    let path = paths.shift();
+    if (paths.length) {
+      return this.getDepthItem(item[path], paths);
+    } else {
+      return item[path];
+    }
+  }
+
+  private domIndexOf(child, parent) {
+    return Array.prototype.indexOf.call(parent.children, child);
+  };
+
+
+  private switchItem(dragElm: any, dropGroupElm: any, dragGroupElm: any) {
+
+    let dropParnetPath = dropGroupElm.parentElement.dataset.path;
+    let dragParnetPath = dragGroupElm.parentElement.dataset.path;
+    var dropGroup = this.getDepthItem(this.collection, dropParnetPath);
+    var dragGroup = this.getDepthItem(this.collection, dragParnetPath);
+
+
+
+    let dropIndex = this.domIndexOf(dragElm, dropGroupElm);
+    let keys = Object.keys(dragGroup);
+    let dragItem = dragGroup[keys[this.dragIndex]];
+
+
+    console.log('b', dropGroup);
+
+    //추가
+    let newGroup = Object.values(dropGroup);
+    newGroup.splice(dropIndex, 0, dragItem);
+
+
+    console.log('a', newGroup);
+
+    //drap한 item (삭제됨)
+    let dragItemPath = dragElm.dataset.path;
+    //삭제
+
+
+    console.log(dragItemPath);
+    console.log(dropParnetPath, newGroup);
+    if (dropGroupElm && dragGroupElm) {
+
+      newGroup.splice(this.dragIndex, 1);
+
+      this.collectionService
+        .setItem(dropParnetPath, newGroup)
+        .update();
+
+    } else {
+      this.collectionService
+        .setItem(dragItemPath, null)
+        .setItem(dropParnetPath, newGroup)
+        .update();
+
+    }
+
+  }
+
+
 
   ngOnInit() {
     //변경 수신대기
@@ -65,7 +153,7 @@ export class CollectionComponent implements OnInit {
       isBlocking: false,
       mode: MODE.CREATE,
       type: TYPE.FOLDER,
-      path: 'api/item',
+      path: '',
       item: this.collection.item
     },
       BSModalContext)).then((resultPromise) => {

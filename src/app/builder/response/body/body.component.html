@@ -1,17 +1,25 @@
-<div class="button-bar mt-2 mb-2" style="width:280px;margin:0 auto;">
-  <div class="button-bar__item">
-    <input type="radio" name="format" value="pretty" [(ngModel)]="format">
-    <button class="button-bar__button">Pretty</button>
+<div style="display:flex">
+  <div style="flex:1">
+    <div class="button-bar mt-2 mb-2" style="width:280px;margin:0 auto;">
+      <div class="button-bar__item">
+        <input type="radio" name="format" value="pretty" [(ngModel)]="format">
+        <button class="button-bar__button">Pretty</button>
+      </div>
+      <div class="button-bar__item">
+        <input type="radio" name="format" value="raw" [(ngModel)]="format">
+        <button class="button-bar__button">Raw</button>
+      </div>
+      <div class="button-bar__item">
+        <input type="radio" name="format" value="privew" [(ngModel)]="format">
+        <button class="button-bar__button">Preview</button>
+      </div>
+    </div>
   </div>
-  <div class="button-bar__item">
-    <input type="radio" name="format" value="raw" [(ngModel)]="format">
-    <button class="button-bar__button">Raw</button>
-  </div>
-  <div class="button-bar__item">
-    <input type="radio" name="format" value="privew" [(ngModel)]="format">
-    <button class="button-bar__button">Preview</button>
-  </div>
+  <button (click)="onSave()">
+  <span class="glyphicon ion-archive" style="flex:0 0 20px;font-size:27px"></span>
+</button>
 </div>
+
 
 <pre [innerHtml]="bodyJson | prettyjson:3" [hidden]="format!='pretty'">
 </pre>
@@ -19,7 +27,6 @@
 <pre [innerText]="body" [hidden]="format!='raw'">
 </pre>
 
-<webview id="webview" src="about:blank"  autosize="on" [ngClass]="{'hide': (format!='privew')}" 
- [style.height.px]="height">
+<webview id="webview" src="about:blank" autosize="on" [ngClass]="{'hide': (format!='privew')}" [style.height.px]="height">
 
 </webview>

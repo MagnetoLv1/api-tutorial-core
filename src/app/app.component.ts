@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  size = [25, 75];
+  size = [25, 75];  
   constructor() {
   }
 
@@ -15,6 +15,7 @@ export class AppComponent {
     if (localStorage.getItem('split-size')) {
       this.size = JSON.parse(localStorage.getItem('split-size'));
     }
+
   }
 
   onDragEnd($event) {
@@ -23,3 +24,4 @@ export class AppComponent {
     localStorage.setItem('split-size', JSON.stringify($event));
   }
 }
+
