@@ -1,12 +1,13 @@
-<li (click)="onItemClick($event)" (contextmenu)="onContextMenu($event, item)" (mouseenter)="onMouseenter()" (mouseleave)="onMouseleave()" *ngIf="item" >
-    <div style="height:20px;display:flex;">
-        <div style="flex: 0 0 42px;">
-            <span class="button switch " [ngClass]="nodeClass"></span>
+<li (click)="onItemClick($event)" (contextmenu)="onContextMenu($event, item)" *ngIf="item" appDragdrop  draggable="true"
+ [attr.data-path]="path"
+ [attr.data-index]="index" [item]="item">
+    <div style="height:20px;display:flex;" >
+        <div style="flex: 0 0 22px;">
             <span class="button" [ngClass]="itemClass"></span>
         </div>
 
-        <div style="flex:1;overflow:hidden; flex-direction:row">
-            <span class="node_name" style="overflow:hidden;text-overflow: ellipsis;white-space: nowrap;display:block">{{item.name}}-{{path}}</span>
+        <div id="title" style="flex:1;overflow:hidden; flex-direction:row;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;" >
+            {{item.name}}-{{level}}
         </div>
         <div style="flex: 0 0 30px;" *ngIf="hover==true" >
             <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onAddlick($event)" *ngIf="isFolder()">
@@ -20,5 +21,5 @@
             </button>
         </div>
     </div>
-    <collection-group [item]="item.item" [level]="level+1" *ngIf="item.item" [path]="path+'/item'" [hidden]="!open"   [attr.data-path]="path+'/item'"></collection-group>
+    <collection-group [item]="item.item"  *ngIf="item.item" [path]="path+'/item'" [hidden]="!open"   [attr.data-path]="path+'/item'"></collection-group>
 </li>

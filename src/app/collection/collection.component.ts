@@ -6,8 +6,8 @@ import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.comp
 
 import { CollectionService } from '../services/collection.service';
 import { ElectronService } from 'ngx-electron';
-import { DragulaService } from 'ng2-dragula';
 import { ElementRef } from '@angular/core/src/linker/element_ref';
+import { DragulaService } from '../../ng2-dragula';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -63,49 +63,49 @@ export class CollectionComponent implements OnInit {
 
   private switchItem(dragElm: any, dropGroupElm: any, dragGroupElm: any) {
 
-    let dropParnetPath = dropGroupElm.parentElement.dataset.path;
-    let dragParnetPath = dragGroupElm.parentElement.dataset.path;
-    var dropGroup = this.getDepthItem(this.collection, dropParnetPath);
-    var dragGroup = this.getDepthItem(this.collection, dragParnetPath);
+    // let dropParnetPath = dropGroupElm.parentElement.dataset.path;
+    // let dragParnetPath = dragGroupElm.parentElement.dataset.path;
+    // var dropGroup = this.getDepthItem(this.collection, dropParnetPath);
+    // var dragGroup = this.getDepthItem(this.collection, dragParnetPath);
 
 
 
-    let dropIndex = this.domIndexOf(dragElm, dropGroupElm);
-    let keys = Object.keys(dragGroup);
-    let dragItem = dragGroup[keys[this.dragIndex]];
+    // let dropIndex = this.domIndexOf(dragElm, dropGroupElm);
+    // let keys = Object.keys(dragGroup);
+    // let dragItem = dragGroup[keys[this.dragIndex]];
 
 
-    console.log('b', dropGroup);
+    // console.log('b', dropGroup);
 
-    //추가
-    let newGroup = Object.values(dropGroup);
-    newGroup.splice(dropIndex, 0, dragItem);
-
-
-    console.log('a', newGroup);
-
-    //drap한 item (삭제됨)
-    let dragItemPath = dragElm.dataset.path;
-    //삭제
+    // //추가
+    // let newGroup = Object.values(dropGroup);
+    // newGroup.splice(dropIndex, 0, dragItem);
 
 
-    console.log(dragItemPath);
-    console.log(dropParnetPath, newGroup);
-    if (dropGroupElm && dragGroupElm) {
+    // console.log('a', newGroup);
 
-      newGroup.splice(this.dragIndex, 1);
+    // //drap한 item (삭제됨)
+    // let dragItemPath = dragElm.dataset.path;
+    // //삭제
 
-      this.collectionService
-        .setItem(dropParnetPath, newGroup)
-        .update();
 
-    } else {
-      this.collectionService
-        .setItem(dragItemPath, null)
-        .setItem(dropParnetPath, newGroup)
-        .update();
+    // console.log(dragItemPath);
+    // console.log(dropParnetPath, newGroup);
+    // if (dropGroupElm && dragGroupElm) {
 
-    }
+    //   newGroup.splice(this.dragIndex, 1);
+
+    //   this.collectionService
+    //     .setItem(dropParnetPath, newGroup)
+    //     .update();
+
+    // } else {
+    //   this.collectionService
+    //     .setItem(dragItemPath, null)
+    //     .setItem(dropParnetPath, newGroup)
+    //     .update();
+
+    // }
 
   }
 
@@ -164,5 +164,9 @@ export class CollectionComponent implements OnInit {
             console.log('Rejected', e);
           });
       });
+  }
+  
+  onDrop(){
+    console.log('dropdropdropdropdropdropdropdropdrop')
   }
 }

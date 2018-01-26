@@ -14,7 +14,7 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { PrettyJsonModule, SafeJsonPipe } from 'angular2-prettyjson';   //Json Prtty 
 import { ToastrModule } from 'ngx-toastr';
-import { DragulaModule } from 'ng2-dragula';
+import { DragulaModule } from '../ng2-dragula';
 
 
 import { AppComponent } from './app.component';
@@ -36,13 +36,14 @@ import { ResponseHeadersComponent } from './builder/response/headers/headers.com
 import { ResponseCookiesComponent } from './builder/response/cookies/cookies.component';
 import { WikiLoginComponent } from './builder/wiki/login/login.component';
 import { ResponseExamplesComponent } from './builder/response/examples/examples/examples.component';
+import { BodySavePromptComponent } from './builder/response/body/save.prompt/save.prompt.component';
 
 import { CollectionService } from './services/collection.service';
 import { FilesystemService } from './services/filesystem.service';
 import { SendService } from './services/send.service';
 import { WikiService } from './services/wiki.service';
 import { HttpService } from './services/http.service';
-import { BodySavePromptComponent } from './builder/response/body/save.prompt/save.prompt.component';
+import { DragdropDirective } from './directive/dragdrop.directive';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { BodySavePromptComponent } from './builder/response/body/save.prompt/sav
     ResponseCookiesComponent,
     WikiLoginComponent,
     ResponseExamplesComponent,
-    BodySavePromptComponent
+    BodySavePromptComponent,
+    DragdropDirective
   ],
   imports: [
     BrowserModule,

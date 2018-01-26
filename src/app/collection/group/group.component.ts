@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 
 @Component({
   selector: 'collection-group',
@@ -7,7 +7,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GroupComponent implements OnInit {
 
-  @Input() level: number = 0;
   @Input() item: Array<Object> = [];
   @Input() path: string;
   constructor() { }
@@ -15,9 +14,6 @@ export class GroupComponent implements OnInit {
   ngOnInit() {
   }
 
-  get lineClass(): string {
-    return this.level > 0 ? 'line' : 'ztree';
-  }
 
   keys(){
     return Object.keys(this.item);
@@ -25,6 +21,18 @@ export class GroupComponent implements OnInit {
 
   get itemValue(){
     return Object.values(this.item);
+  }
+
+  onItemDrop(event){
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('onItemDrop',this.path, event.detail)
+  }
+
+  onItemDrag(event){
+    event.preventDefault();
+    event.stopPropagation();
+    console.log('onItemDrag',this.path, event.detail)
   }
 
 }

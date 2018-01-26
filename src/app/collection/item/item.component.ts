@@ -6,6 +6,7 @@ import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import { RequestModalContext, EditComponent, MODE, TYPE } from '../edit/edit.component';
 import { CollectionService } from "app/services/collection.service";
 import { ToastrService } from "ngx-toastr";
+import { ItemDropEmit } from 'app/directive/dragdrop.directive';
 
 @Component({
   selector: 'collection-item',
@@ -14,7 +15,6 @@ import { ToastrService } from "ngx-toastr";
 })
 export class ItemComponent implements OnInit {
   @Input() item: any;
-  @Input() level: number;
   @Input() path: string;
   @Input() index: Number = 0;
 
@@ -25,6 +25,15 @@ export class ItemComponent implements OnInit {
   constructor(private broadcaster: Broadcaster, private collectionService: CollectionService,
     private electronService: ElectronService, public modal: Modal, private toastr: ToastrService) {
 
+  }
+
+
+  onDragEnter(event,aaa) {
+     //console.log('onDragEnteronDragEnter', this.path)
+
+  }
+  onDragLeave(event,aaa){
+     // console.log('onDragLeaveonDragLeaveonDragLeaveonDragLeave', this.path)
   }
 
   ngOnInit() {
@@ -84,7 +93,11 @@ export class ItemComponent implements OnInit {
     localStorage.setItem(this.path, state.toString());
   }
 
+  @Output('itemdrop') onItemDrop = new EventEmitter<ItemDropEmit>();
   onAddlick($event) {
+    console.log('onAddlick');
+    this.onItemDrop.emit(new ItemDropEmit(1));
+    return;
     console.log(this.path, this.path.length, MODE.CREATE);
     this.modal.open(EditComponent, overlayConfigFactory({
       isBlocking: false,
@@ -143,4 +156,11 @@ export class ItemComponent implements OnInit {
     this.hover = false;
   }
 
+  onDrop(){
+    console.log('dropdropdropdropdropdropdropdropdrop')
+  }
+  onOver(){
+    console.log('onOveronOveronOveronOveronOveronOveronOveronOver')
+
+  }
 }

@@ -1,3 +1,9 @@
-<ul id="treeDemo"  [ngClass]="lineClass" [dragula]='"bag"'  >
-  <collection-item *ngFor="let index of keys();" [item]="item[index]" [index]=[index] [path]="path +'/'+ index" [level]="level"  [attr.data-path]="path +'/'+ index"></collection-item>
+<ul>
+  <collection-item *ngFor="let data of item; let i = index" [item]="data" [index]=[i] [path]="path +'/'+ i"  (itemDrop)="onItemDrop($event)" (itemDrag)="onItemDrag($event)"></collection-item>
+  <div>
+    <li appDragdrop [attr.data-path]="'blank'" [attr.data-index]="item.length">
+      <div style="height:100%;border-top:dotted 2px rgba(255, 255,255, .0); ">
+      </div>
+    </li>
+  </div>
 </ul>
