@@ -1,17 +1,10 @@
-/*-------------------------------------
-zTree Style
-
-version:	3.5.19
-author:		Hunter.z
-email:		hunter.z@263.net
-website:	http://code.google.com/p/jquerytree/
-
--------------------------------------*/
 ul{padding:0; }
 :host /deep/ li ul{padding-left: 20px}
 
 :host /deep/ .dragenter{
   border-top:dotted 2px #F74;
 }
-li{padding:0; margin:0; list-style:none; line-height:14px; text-align:left; white-space:nowrap; outline:0; 
-border-top:dotted 2px rgba(255, 255,255, .0);  }
+
+:host /deep/ .drag{
+  opacity: 0.4;
+}

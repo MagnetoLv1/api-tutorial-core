@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, ElementRef } from '@angular/core';
+import { CollectionService } from 'app/services/collection.service';
 
 @Component({
   selector: 'collection-group',
@@ -9,30 +10,52 @@ export class GroupComponent implements OnInit {
 
   @Input() item: Array<Object> = [];
   @Input() path: string;
-  constructor() { }
+  constructor(, private collectionService: CollectionService) { }
 
   ngOnInit() {
   }
 
 
-  keys(){
+  keys() {
     return Object.keys(this.item);
   }
 
-  get itemValue(){
+  get itemValue() {
     return Object.values(this.item);
   }
 
-  onItemDrop(event){
+  onItemDrop(event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('onItemDrop',this.path, event.detail)
+
+    // 삭제
+    if (event.detail.dragIndex >= 0 && event.detail.dropIndex < event.detail.dragIndex) {
+      this.item.splice(event.detail.dragIndex, 1);
+    }
+    if (event.detail.dropIndex >= 0 && event.detail.dropItem) {
+      this.item.splice(event.detail.dropIndex, 0, event.detail.dropItem);
+    }
+    //삭제
+    if (event.detail.dragIndex >= 0 && event.detail.dropIndex > event.detail.dragIndex) {
+      this.item.splice(event.detail.dragIndex, 1);
+    }
+
+
+    this.collectionService
+      .update(this.path, this.item)
+
+
   }
 
-  onItemDrag(event){
+  onItemDrag(event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log('onItemDrag',this.path, event.detail)
+    if (event.detail.dragIndex >= 0) {
+      this.item.splice(event.detail.dragIndex, 1);
+
+      this.collectionService
+        .update(this.path, this.item)
+    }
   }
 
 }

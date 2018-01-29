@@ -1,25 +1,32 @@
-<li (click)="onItemClick($event)" (contextmenu)="onContextMenu($event, item)" *ngIf="item" appDragdrop  draggable="true"
- [attr.data-path]="path"
- [attr.data-index]="index" [item]="item">
-    <div style="height:20px;display:flex;" >
+<li (click)="onItemClick($event)" (mouseenter)="onMouseenter()" (mouseleave)="onMouseleave()" (contextmenu)="onContextMenu($event, item)"
+    *ngIf="item" appDragdrop draggable="true" [attr.data-path]="path" [attr.data-index]="index" [item]="item">
+    <div style="height:20px;display:flex;" *ngIf="item">
         <div style="flex: 0 0 22px;">
             <span class="button" [ngClass]="itemClass"></span>
         </div>
 
-        <div id="title" style="flex:1;overflow:hidden; flex-direction:row;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;" >
-            {{item.name}}-{{level}}
+        <div id="title" style="flex:1;overflow:hidden; flex-direction:row;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;">
+            {{item.name}}
         </div>
-        <div style="flex: 0 0 30px;" *ngIf="hover==true" >
+        <div style="flex: 0 0 30px;" *ngIf="hover==true">
             <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onAddlick($event)" *ngIf="isFolder()">
                 <span class="ion-plus-round" aria-hidden="true"></span>
             </button>
             <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onEditClick($event)">
                 <span class=" ion-edit" aria-hidden="true"></span>
             </button>
-            <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onDeleteClick($event)"> 
+            <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onDeleteClick($event)">
                 <span class=" ion-close-round" aria-hidden="true"></span>
             </button>
         </div>
     </div>
-    <collection-group [item]="item.item"  *ngIf="item.item" [path]="path+'/item'" [hidden]="!open"   [attr.data-path]="path+'/item'"></collection-group>
+
+    <collection-group [item]="item.item" *ngIf="item.item" [path]="path+'/item'" [hidden]="!open" [attr.data-path]="path+'/item'"></collection-group>
+</li>
+
+
+<li (contextmenu)="onContextMenu($event, item)" *ngIf="!item" appDragdrop [attr.data-path]="path" [attr.data-index]="index" style="height:5px">
+    <!--마지막-->
+    <div style="height:100%;border-top:dotted 2px rgba(255, 255,255, .0); ">
+    </div>
 </li>

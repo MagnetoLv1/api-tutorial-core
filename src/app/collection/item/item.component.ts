@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, Input, EventEmitter, Output, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, HostListener, Input, EventEmitter, Output, ViewContainerRef, ElementRef, Renderer } from '@angular/core';
 import { Broadcaster } from 'ng2-broadcast';
 import { ElectronService } from 'ngx-electron';
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
@@ -22,18 +22,18 @@ export class ItemComponent implements OnInit {
   open: boolean = false;
   @Output() outEventEmitter: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private broadcaster: Broadcaster, private collectionService: CollectionService,
+  constructor(private el: ElementRef, private renderer: Renderer, private broadcaster: Broadcaster, private collectionService: CollectionService,
     private electronService: ElectronService, public modal: Modal, private toastr: ToastrService) {
 
   }
 
 
-  onDragEnter(event,aaa) {
-     //console.log('onDragEnteronDragEnter', this.path)
+  onDragEnter(event, aaa) {
+    //console.log('onDragEnteronDragEnter', this.path)
 
   }
-  onDragLeave(event,aaa){
-     // console.log('onDragLeaveonDragLeaveonDragLeaveonDragLeave', this.path)
+  onDragLeave(event, aaa) {
+    // console.log('onDragLeaveonDragLeaveonDragLeaveonDragLeave', this.path)
   }
 
   ngOnInit() {
@@ -95,9 +95,6 @@ export class ItemComponent implements OnInit {
 
   @Output('itemdrop') onItemDrop = new EventEmitter<ItemDropEmit>();
   onAddlick($event) {
-    console.log('onAddlick');
-    this.onItemDrop.emit(new ItemDropEmit(1));
-    return;
     console.log(this.path, this.path.length, MODE.CREATE);
     this.modal.open(EditComponent, overlayConfigFactory({
       isBlocking: false,
@@ -156,11 +153,4 @@ export class ItemComponent implements OnInit {
     this.hover = false;
   }
 
-  onDrop(){
-    console.log('dropdropdropdropdropdropdropdropdrop')
-  }
-  onOver(){
-    console.log('onOveronOveronOveronOveronOveronOveronOveronOver')
-
-  }
 }

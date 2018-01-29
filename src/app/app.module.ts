@@ -14,7 +14,6 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { PrettyJsonModule, SafeJsonPipe } from 'angular2-prettyjson';   //Json Prtty 
 import { ToastrModule } from 'ngx-toastr';
-import { DragulaModule } from '../ng2-dragula';
 
 
 import { AppComponent } from './app.component';
@@ -81,7 +80,6 @@ import { DragdropDirective } from './directive/dragdrop.directive';
     BootstrapModalModule,
     ToastrModule.forRoot(), // ToastrModule added
     BrowserAnimationsModule,// required animations module
-    DragulaModule, //Drag and drop so simple it hurts
   ],
   providers: [CollectionService, SendService, WikiService, HttpService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
   bootstrap: [AppComponent],

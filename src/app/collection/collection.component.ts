@@ -7,7 +7,6 @@ import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.comp
 import { CollectionService } from '../services/collection.service';
 import { ElectronService } from 'ngx-electron';
 import { ElementRef } from '@angular/core/src/linker/element_ref';
-import { DragulaService } from '../../ng2-dragula';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -23,21 +22,9 @@ export class CollectionComponent implements OnInit {
   constructor(private _electronService: ElectronService,
     private collectionService: CollectionService,
     private toastr: ToastrService,
-    public modal: Modal,
-    private dragulaService: DragulaService) {
+    public modal: Modal) {
 
     var Notification = this._electronService.remote.Notification;
-
-    dragulaService.drag.subscribe((value) => {
-      let [id, dragElm, dragGroupElm] = value;
-      this.dragIndex = this.domIndexOf(dragElm, dragGroupElm);
-      console.log(this.dragIndex);
-    });
-    dragulaService.drop.subscribe((value) => {
-
-      let [id, dragElm, dropGroupElm, dragGroupElm] = value;
-      this.switchItem(dragElm, dropGroupElm, dragGroupElm);
-    });
   }
 
 
