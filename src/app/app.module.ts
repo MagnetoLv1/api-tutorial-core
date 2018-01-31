@@ -36,12 +36,15 @@ import { ResponseCookiesComponent } from './builder/response/cookies/cookies.com
 import { WikiLoginComponent } from './builder/wiki/login/login.component';
 import { ResponseExamplesComponent } from './builder/response/examples/examples/examples.component';
 import { BodySavePromptComponent } from './builder/response/body/save.prompt/save.prompt.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 import { CollectionService } from './services/collection.service';
 import { FilesystemService } from './services/filesystem.service';
 import { SendService } from './services/send.service';
 import { WikiService } from './services/wiki.service';
 import { HttpService } from './services/http.service';
+import { UpdateService } from './services/update.service';
+import { MenuService } from './services/menu.service';
 import { DragdropDirective } from './directive/dragdrop.directive';
 
 
@@ -66,7 +69,8 @@ import { DragdropDirective } from './directive/dragdrop.directive';
     WikiLoginComponent,
     ResponseExamplesComponent,
     BodySavePromptComponent,
-    DragdropDirective
+    DragdropDirective,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +85,7 @@ import { DragdropDirective } from './directive/dragdrop.directive';
     ToastrModule.forRoot(), // ToastrModule added
     BrowserAnimationsModule,// required animations module
   ],
-  providers: [CollectionService, SendService, WikiService, HttpService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
+  providers: [CollectionService, SendService, WikiService, HttpService, UpdateService, MenuService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
   bootstrap: [AppComponent],
   entryComponents: [EditComponent,WikiLoginComponent, BodySavePromptComponent]
 })

@@ -1,23 +1,30 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <button aria-label="Close" class="close" type="button" (click)="onClose()">
-          <span aria-hidden="true">×</span>
-      </button>
-    <h3 class="modal-title">{{title}}</h3>
-  </div>
   <div class="modal-body">
-    <div class="form-group">
-      <label for="exampleInputEmail1">Name</label>
-      <input type="text" class="form-control" placeholder="Request Name" [(ngModel)]="name">
-    </div>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Description</label>
-      <textarea class="form-control" placeholder="Adding a description makes yout docs better" [(ngModel)]="description">
+    <button aria-label="Close" class="close" type="button" (click)="onClose()">
+      <span aria-hidden="true">×</span>
+    </button>
+    <ul class="nav nav-tabs">
+      <li role="presentation" [ngClass]="{'disabled':mode==2,'active':(type==1)}">
+        <a (click)="tabClick(1)">{{saveName}} a New Folder</a>
+      </li>
+      <li role="presentation" [ngClass]="{'disabled':mode==2,'active':(type==2)}">
+        <a (click)="tabClick(2)">{{saveName}} a New Request</a>
+      </li>
+    </ul>
+    <div style="padding:15px">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Name</label>
+        <input type="text" class="form-control" placeholder="Request Name" [(ngModel)]="name">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Description</label>
+        <textarea class="form-control" placeholder="Adding a description makes yout docs better" [(ngModel)]="description">
           </textarea>
+      </div>
+      <div style="width:100%;display:table;text-align:right">
+        <button type="button" class="btn btn-default" (click)="onClose()">Cancel</button>
+        <button type="submit" class="btn btn-primary" (click)="onSave()">Save</button>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="onClose()">Cancel</button>
-    <button type="submit" class="btn btn-primary" (click)="onSave()">Save</button> 
   </div>
 </div>

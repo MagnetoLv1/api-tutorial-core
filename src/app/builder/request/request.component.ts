@@ -20,6 +20,7 @@ export class RequestComponent implements OnInit {
   @Output() saveEvent = new EventEmitter<String>();
 
   show_description: Boolean = false;
+  methodDrop:boolean =false;
   constructor(private sendService: SendService, private wikiService: WikiService, private collectionService: CollectionService, private toastr: ToastrService, public modal: Modal) {
   }
 

@@ -163,7 +163,9 @@ export class HttpService {
         responseObserver.complete();
       })
     })
-    clientRequest.write(request.getBody().replace('+','%2B'));
+    if(request.getBody()){
+      clientRequest.write(request.getBody().replace('+','%2B'));
+    }
     clientRequest.on('error', (error) => {
       responseObserver.error(new Response(new ResponseOptions({
         body: error,

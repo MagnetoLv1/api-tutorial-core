@@ -13,3 +13,9 @@
     margin-bottom: 10px;
     padding: 10px;
   }
+
+  :host{
+    display: block;
+    height:100%;
+    border-top: solid 1px black;
+  }

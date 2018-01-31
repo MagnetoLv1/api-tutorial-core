@@ -31,6 +31,8 @@ export class EditComponent {
   name: string;
   description: string;
 
+   
+
   constructor(public dialog: DialogRef<RequestModalContext>, private collectionService: CollectionService, private toastr: ToastrService) {
     this.context = this.dialog.context;
     this.mode = this.dialog.context.mode;
@@ -42,18 +44,17 @@ export class EditComponent {
       this.description = item.description;
     }
   }
-  get title() {
-    return (this.mode == MODE.CREATE ? 'Create a new ' : 'Edit ') + this.typeString;
-  }
-
-  get typeString() {
-    return this.type == TYPE.FOLDER ? 'Folder' : 'Request';
-  }
 
   get saveName() {
     return this.type == MODE.CREATE ? 'Create' : 'Update';
   }
 
+  tabClick( type){
+    if(this.mode==2){
+      return false;
+    }
+    this.type =type;
+  }
 
   onClose() {
     this.dialog.close();

@@ -10,7 +10,7 @@ export class GroupComponent implements OnInit {
 
   @Input() item: Array<Object> = [];
   @Input() path: string;
-  constructor(, private collectionService: CollectionService) { }
+  constructor(private collectionService: CollectionService) { }
 
   ngOnInit() {
   }

@@ -1,4 +1,4 @@
-<li (click)="onItemClick($event)" (mouseenter)="onMouseenter()" (mouseleave)="onMouseleave()" (contextmenu)="onContextMenu($event, item)"
+<li (click)="onItemClick($event)" (mouseenter)="onMouseenter()" (mouseleave)="onMouseleave()" 
     *ngIf="item" appDragdrop draggable="true" [attr.data-path]="path" [attr.data-index]="index" [item]="item">
     <div style="height:20px;display:flex;" *ngIf="item">
         <div style="flex: 0 0 22px;">

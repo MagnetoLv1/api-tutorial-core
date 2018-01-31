@@ -45,7 +45,7 @@ export class BuilderComponent implements OnInit {
     this.response = response;
   }
 
-  onSaveEvent() {
+  onSaveEvent(event) {
     let request = JSON.parse(JSON.stringify(this.item.request));
     this.emptyDataRemove(request.body, ContextType.urlencoded);
     this.emptyDataRemove(request.body, 'formdata');

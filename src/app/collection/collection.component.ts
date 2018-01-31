@@ -14,8 +14,8 @@ import { ElementRef } from '@angular/core/src/linker/element_ref';
 })
 export class CollectionComponent implements OnInit {
 
-  private collection: any = null;
   private selectItem: Object;
+  public collection: any = null;
 
 
   private dragIndex;
