@@ -79,7 +79,7 @@ export class EditComponent {
           }
         };
 
-      this.collectionService.push(path, item).then(() => {
+      this.collectionService.itemPush(path, item).then(() => {
         this.toastr.info('생성 되었습니다.');
         this.dialog.close();
       },

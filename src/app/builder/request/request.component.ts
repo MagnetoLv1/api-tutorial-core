@@ -107,6 +107,7 @@ export class RequestComponent implements OnInit {
       //부모가 생성되어있는지 보고      
       this.wikiService.parentWiki(this.item).then((parentName) => {
         //본인 WIKI생성
+        console.log('부모생성된');
         let title = WikiTemplate.api(this.item, parentName);
         this.wikiService.editWiki(this.item.path, this.item.name, title).then(() => {
           this.toastr.success("WIKI에 등록되었습니다.");

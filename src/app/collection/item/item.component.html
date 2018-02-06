@@ -6,7 +6,7 @@
 
         <div id="title" style="flex:1;overflow:hidden; flex-direction:row;overflow:hidden;text-overflow: ellipsis;white-space: nowrap;
         line-height: 25px;">
-            {{item.name}}-{{index}}
+            {{item.name}}
         </div>
         <div style="flex: 0 0 30px;" [hidden]="!hover">
             <button type="button" class="glyphicon btn btn-default btn-xxs" (click)="onAddlick($event)" *ngIf="isFolder()">

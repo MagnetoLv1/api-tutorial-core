@@ -81,7 +81,7 @@ export class CollectionService {
   /**
    * 
    */
-  push(path, data: Object): Promise<any> {
+  itemPush(path, data: Object): Promise<any> {
 
     let ref: firebase.database.Reference = (!path) ? firebase.database().ref() : firebase.database().ref(path);
 
@@ -99,5 +99,17 @@ export class CollectionService {
     });
   }
 
+
+  push(path, data: Object): Promise<any> {
+    return firebase.database().ref(path).orderByKey().limitToLast(1).once('value').then((snapshot) => {
+      let val, index = 0;
+      if (val = snapshot.val()) {
+        let key = Object.keys(val)[0];
+        index = parseInt(key) + 1;
+      }
+      path = (path + '/' + index);
+      return this.update(path, data);
+    });
+  }
 
 }

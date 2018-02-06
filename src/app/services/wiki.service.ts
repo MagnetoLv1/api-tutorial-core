@@ -92,6 +92,7 @@ export class WikiService {
   editWiki(path, title, text): Promise<void> {
     return new Promise((resolve, reject) => {
       //루트이면 생성되었다함;
+      console.log(path, CONFIG.root_path)
       if (path == CONFIG.root_path) {
         reject('The top level can not be created.');
         return;
@@ -116,6 +117,7 @@ export class WikiService {
    */
   public parentWiki(childItem: Item): Promise<string> {
 
+    console.log('parentWiki')
     return new Promise((resolve, reject) => {
       let parentPath = this._parentPath(childItem.path);
       if (parentPath == CONFIG.root_path) {
@@ -307,11 +309,11 @@ export class WikiService {
    */
   private _parentPath(path: string) {
     let paths = path.split('/');
-    let newPaths = paths.slice(0, paths.length - 2);
     if (paths.length > 2) {
+      let newPaths = paths.slice(0, paths.length - 2);
       return newPaths.join('/');
     } else {
-      return path;
+      return CONFIG.root_path;
     }
   }
 

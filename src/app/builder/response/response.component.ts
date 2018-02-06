@@ -28,6 +28,7 @@ export class ResponseComponent implements  OnInit {
 
   
   onResponseSaveEvent(example){
+    console.log(this.item.path + '/response/examples', example);
     this.collectionService.push(this.item.path + '/response/examples',example);  
   }
 
