@@ -7,6 +7,7 @@ import { RequestModalContext, EditComponent, MODE, TYPE } from './edit/edit.comp
 import { CollectionService } from '../services/collection.service';
 import { ElectronService } from 'ngx-electron';
 import { ElementRef } from '@angular/core/src/linker/element_ref';
+import { DragdropService } from 'app/directive/dragdrop.service';
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
@@ -19,9 +20,11 @@ export class CollectionComponent implements OnInit {
 
 
   private dragIndex;
+  private isDragInProgress:Boolean =false;
   constructor(private _electronService: ElectronService,
     private collectionService: CollectionService,
     private toastr: ToastrService,
+    private dragdropService:DragdropService,
     public modal: Modal) {
 
     var Notification = this._electronService.remote.Notification;
@@ -113,17 +116,21 @@ export class CollectionComponent implements OnInit {
         });
         noti.show();
       }
+      console.log(this.collection, data);
       this.collection = data;
+      console.log(this.collection);
     },
       error => {
         console.log(error);
       });
 
-  }
-  setCollection(data) {
-    this.collection = data;
-  }
+      
+    this.dragdropService.dragging.subscribe(isDragging => {
+      console.log('isDragging',isDragging)
+      this.isDragInProgress = isDragging;
+    })
 
+  }
 
 
   onItemClick($event) {
@@ -155,5 +162,9 @@ export class CollectionComponent implements OnInit {
   
   onDrop(){
     console.log('dropdropdropdropdropdropdropdropdrop')
+  }
+
+  onDragging(){
+    console.log('onDraggingonDraggingonDragging')
   }
 }

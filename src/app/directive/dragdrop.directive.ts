@@ -1,5 +1,8 @@
-import { Directive, ElementRef, HostListener, Renderer, EventEmitter, Output, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer, EventEmitter, Output, Input, Optional } from '@angular/core';
 import { Item } from 'app/models/item';
+import { setTimeout } from 'timers';
+import { NgModel } from '@angular/forms';
+import { DragdropService } from 'app/directive/dragdrop.service';
 
 @Directive({
   selector: '[appDragdrop]',
@@ -7,21 +10,22 @@ import { Item } from 'app/models/item';
     '(drop)': 'onDrop($event)',
     '(dragstart)': 'onDragStart($event)',
     '(dragend)': 'onDragEnd($event)',
-    '(dragover)': 'onDragOver($event)',
-    '(dragenter)': 'onDragEnter($event)',
-    '(dragleave)': 'onDragLeave($event)',
+    //'(dragover)': 'onDragOver($event)',
+    //'(dragenter)': 'onDragEnter($event)',
+    //'(dragleave)': 'onDragLeave($event)',
   }
 
 })
 export class DragdropDirective {
 
   @Input() public item: any;
-  constructor(private el: ElementRef, private renderer: Renderer) {
+  @Input() public postition: number = 0;
+  @Input() public appDragdrop: number = 0;
+  constructor(private dragdropService: DragdropService, private el: ElementRef, private renderer: Renderer) {
   }
 
   drapElm: any;
   dragOverElm: any;
-  position: Boolean = false;
   static dragElement: any;
   static item: any;
   ondragexit(event) {
@@ -33,22 +37,24 @@ export class DragdropDirective {
    **********************/
   onDragStart(event) {
 
+    this.dragdropService.dragging.emit(false);
 
     DragdropDirective.dragElement = event.currentTarget;
     DragdropDirective.item = this.item;
-    console.log('onDragStart', this.item.name)
+    //console.log('onDragStart', this.item.name)
     //console.log('onDragStart', event.currentTarget, this.el.nativeElement, event.currentTarget == this.el.nativeElement)
     event.stopPropagation();
     this.drapElm = event.currentTarget;
-    this.renderer.setElementClass(event.currentTarget, "drag", true);
+    //this.renderer.setElementClass(event.currentTarget, "drag", true);
+    this.dragdropService.dragging.emit(true);
   }
   onDragEnd(event) {
-    console.log('onDragEnd')
     event.stopPropagation();
     if (this.drapElm) {
-      this.renderer.setElementClass(this.drapElm, "drag", false);
+      //this.renderer.setElementClass(this.drapElm, "drag", false);
     }
-    this.removeDragOver(this.dragOverElm);
+    //this.removeDragOver(this.dragOverElm);
+    this.dragdropService.dragging.emit(false);
   }
 
   /*************************
@@ -56,15 +62,46 @@ export class DragdropDirective {
    **********************/
   onDragOver(event) {
     //필수 drop 이벤트가 발생시키려면 preventDefault 해줘야함
+
+
+    // let postition = (event && (event.target.offsetHeight / 2) > event.layerY) ? 1 : -1;
+    // if (postition != this.postition) {
+    //   this.postition = postition;
+    //   if (this.postition) {
+    //     this.el.nativeElement.classList.add('is-drop-hovered-top')
+    //   }
+    //   else {
+    //     this.el.nativeElement.classList.add('is-drop-hovered-bottom')
+    //   }
+    // }
+
+
+
+    // setTimeout(() => {
+    //   console.log(event.layerY, event);
+    //   if (event && (event.target.offsetHeight / 2) > event.layerY) {
+    //     if(this.el.nativeElement.classList.contains('is-drop-hovered-top')==false)
+    //     {
+    //       this.el.nativeElement.classList.add('is-drop-hovered-top')
+    //     }
+
+    //     console.log(this.el.nativeElement.classList.contains('is-drop-hovered-top'));
+    //   } else {
+
+    //     console.log(this.el.nativeElement.classList.contains('is-drop-hovered-top'));
+    //     if (this.el.nativeElement.classList.contains('is-drop-hovered-bottom')==false) {
+    //       this.el.nativeElement.classList.add('is-drop-hovered-bottom')
+    //     }
+    //   }
+    // }, 1);
     event.preventDefault();
   }
   onDragEnter(event) {
     // console.log('onDragEnter', this.item, event.currentTarget, this.el.nativeElement, event.currentTarget == this.el.nativeElement)
     event.stopPropagation();
     this.dragOverElm = event.currentTarget;
-    //this.el.nativeElement.classList.add('dragenter')
-    this.renderer.setElementClass(this.el.nativeElement, "dragenter", true);
-
+    //this.renderer.setElementClass(this.el.nativeElement, "is-drop-hovered-top", true);
+    this.el.nativeElement.classList.add('over')
   }
 
   onDragLeave(event) {
@@ -72,8 +109,11 @@ export class DragdropDirective {
     if (event.target == event.currentTarget) {
       return;
     }
-    //this.el.nativeElement.classList.remove('dragenter');
-    this.renderer.setElementClass(this.el.nativeElement, "dragenter", false);
+    //this.el.nativeElement.classList.remove('is-drop-hovered-top');
+    //this.el.nativeElement.classList.remove('is-drop-hovered-bottom');
+    this.el.nativeElement.classList.remove('over')
+    this.postition = -1;
+    //this.renderer.setElementClass(this.el.nativeElement, "is-drop-hovered-top", false);
   }
 
   onDrop(event) {

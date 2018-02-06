@@ -46,6 +46,7 @@ import { HttpService } from './services/http.service';
 import { UpdateService } from './services/update.service';
 import { MenuService } from './services/menu.service';
 import { DragdropDirective } from './directive/dragdrop.directive';
+import { DragdropService } from 'app/directive/dragdrop.service';
 
 
 @NgModule({
@@ -85,7 +86,7 @@ import { DragdropDirective } from './directive/dragdrop.directive';
     ToastrModule.forRoot(), // ToastrModule added
     BrowserAnimationsModule,// required animations module
   ],
-  providers: [CollectionService, SendService, WikiService, HttpService, UpdateService, MenuService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
+  providers: [CollectionService, SendService, WikiService, HttpService, UpdateService, MenuService, DragdropService, FilesystemService, JsonPipe, SafeJsonPipe, Broadcaster],
   bootstrap: [AppComponent],
   entryComponents: [EditComponent,WikiLoginComponent, BodySavePromptComponent]
 })

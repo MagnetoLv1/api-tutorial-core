@@ -1,6 +1,148 @@
-li{padding:0; margin:0; list-style:none; line-height:14px; text-align:left; white-space:nowrap; outline:0; 
-	border-top:dotted 2px rgba(255, 255,255, .0);  }
+li {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    line-height: 14px;
+    text-align: left;
+    white-space: nowrap;
+    outline: 0;
+    position: relative;
+}
 
-li span.button.ico_open{margin-right:2px; background-position:-110px -16px; vertical-align:top; *vertical-align:middle}
-li span.button.ico_close{margin-right:2px; background-position:-110px 0; vertical-align:top; *vertical-align:middle}
-li span.button.ico_docu{margin-right:2px; background-position:-110px -32px; vertical-align:top; *vertical-align:middle}
+li span.button.ico_open {
+    margin-right: 2px;
+    background-position: -110px -16px;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+li span.button.ico_close {
+    margin-right: 2px;
+    background-position: -110px 0;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+li span.button.ico_docu {
+    margin-right: 2px;
+    background-position: -110px -32px;
+    vertical-align: top;
+    *vertical-align: middle
+}
+
+.is-drop-hovered-top {
+    position: relative;
+}
+
+.is-drop-hovered-top::before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #F47023;
+}
+
+.is-drop-hovered-bottom {
+    position: relative;
+}
+
+.is-drop-hovered-bottom::before {
+    content: ' ';
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #F47023;
+}
+
+.item {
+    display: flex;
+    flex-direction: row;
+    height: 25px;
+}
+
+.label {
+    flex: 1;
+    overflow: hidden;
+    flex-direction: row;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    align-items: center;
+}
+
+.insert-before,
+.insert-after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50%;
+    width: 100%;
+    transition: border 200ms linear;
+    box-sizing: border-box;
+    z-index: 1;
+	display: none;
+}
+
+.insert-after {
+    top: 50%;
+}
+
+:host /deep/.list-item:not(.drag-src) .over.insert-before:after {
+    content: '';
+    width: 100%;
+    top: -10px;
+    position: relative;
+    height: 3px !important;
+    display: block;
+    background: #177dd6;
+}
+
+:host /deep/.list-item:not(.drag-src) .over.insert-after:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    display: block;
+    background: #177dd6;
+    position: relative;
+    height: 3px !important;
+    top: calc(100% - 10px);
+}
+
+
+/* the circle on drag */
+
+:host /deep/.list-item:not(.drag-src) .over.insert-before:before,
+:host /deep/.list-item:not(.drag-src) .over.insert-after:before {
+    content: '';
+    border: 2px solid #177dd6;
+    display: block;
+    position: relative;
+    left: -3px;
+    top: -5px;
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 6px;
+    z-index: 10;
+}
+
+:host /deep/.list-item:not(.drag-src) .over.insert-after:before {
+    top: calc(100% - 6px);
+}
+
+.list-item {
+    position: relative;
+    list-style: none;
+    display: block;
+    z-index: 1;
+    background: white;
+}
+
+.list-item.drag-src {
+    opacity: 0.3;
+}
+
+
+/* will make these elements available in the DOM when dragging */

@@ -28,6 +28,7 @@ export class GroupComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
+    console.log(this.item)
     // 삭제
     if (event.detail.dragIndex >= 0 && event.detail.dropIndex < event.detail.dragIndex) {
       this.item.splice(event.detail.dragIndex, 1);
@@ -48,6 +49,7 @@ export class GroupComponent implements OnInit {
   }
 
   onItemDrag(event) {
+    console.log('onItemDrag',this.item)
     event.preventDefault();
     event.stopPropagation();
     if (event.detail.dragIndex >= 0) {

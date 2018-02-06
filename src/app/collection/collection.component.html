@@ -8,4 +8,4 @@
         </button>
     </div>
 </div>
-<collection-group  *ngIf="collection" [item]="collection.item"  [path]="'item'"   [attr.data-path]="'item'"></collection-group>
+<collection-group  class="dragging"  [class.dragging]="isDragInProgress" *ngIf="collection" [item]="collection.item"  [path]="'item'" ></collection-group>

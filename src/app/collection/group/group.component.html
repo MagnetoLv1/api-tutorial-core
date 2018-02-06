@@ -1,4 +1,4 @@
 <ul>
-  <collection-item *ngFor="let data of item; let i = index" [item]="data" [index]=[i] [path]="path +'/'+ i"  (itemDrop)="onItemDrop($event)" (itemDrag)="onItemDrag($event)"></collection-item>
-  <collection-item  [index]=[item.length] [path]="path +'/'+ item.length"  (itemDrop)="onItemDrop($event)" (itemDrag)="onItemDrag($event)"></collection-item>
+  <collection-item *ngFor="let data of item; let i = index" [item]="data" [index]="i" [path]="path +'/'+ i"  (itemDrop)="onItemDrop($event)" (itemDrag)="onItemDrag($event)"></collection-item>
+
 </ul>
