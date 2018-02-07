@@ -17,7 +17,24 @@ export class UpdateService {
       }
       this.getLatest(env.update_check_url).then((response) => {
 
-        if (this.isWiki(response)) {
+        if (this.isGitLab(response)) {
+
+          let newVersion = this.getGitLabLatestVersion(response);
+          if (this.versionCompare(newVersion, currentVersion) > 0) {
+            if (env.update_site) {
+              resolve({
+                version: newVersion,
+                url: env.update_site
+              })
+            } else {
+              reject();
+            }
+          }
+          else {
+            reject()
+          }
+
+        } else if (this.isWiki(response)) {
           let newVersion = this.getWikiLatestVersion(response);
           if (this.versionCompare(newVersion, currentVersion) > 0) {
             if (env.update_site) {
@@ -69,6 +86,18 @@ export class UpdateService {
 
   private isWiki(response) {
     return response["query"] ? true : false;
+  }
+  private isGitLab(response) {
+    return response && response.length && response.filter((val) => {
+      return val.name ? true : false;
+    }).length ? true : false;
+  }
+
+  private getGitLabLatestVersion(response) {
+    let names = response.map((val) => {
+      return val.name;
+    }).sort();
+    return names.pop();
   }
 
   private getWikiLatestVersion(response) {
